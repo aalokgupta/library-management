@@ -1,0 +1,61 @@
+
+<html ng-app = "signUpModule">
+  <head>
+    <title>SignUp</title>
+    <link href = "/public/css/main.css" rel="stylesheet" type="text/css">
+    <script src = "/script/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-route.js"></script>
+    <script src = "/client-controller/signup-controller.js"> </script>
+
+  </head>
+
+<body>
+  <div class = "header">
+  </div>
+  <div class = "signup-login">
+      <h2 class = "signup-login-header">SignUp</h2>
+      <form name = "signupForm" ng-controller = "signUpController" novalidate>
+          <table>
+            <tr>
+              <td>
+                <span class = "span-text"> UserName </span>
+              </td>
+              <td>
+                <input type = "text" id = "signup-username" name = "username" ng-model = "username" class = "text-type" required></br>
+              </td>
+              <td>
+                 <!-- <span style="color:red" ng-show = "signupForm.username.$dirty">
+                  <span id = "span-id-signup-username" ng-show="signupForm.username.$error.required">Username is required.</span>
+                </span> -->
+                <span  class = "span-validation">username already used</span>
+              </td>
+            </tr>
+
+            <tr>
+              <td> <span class = "span-text"> Email </span>  </td>
+              <td>  <input type = "text" id = "signup-email"  ng-model = "email" class = "text-type" /></br></td>
+              <td><span id = "span-id-signup-username" class = "span-validation">Email Id already in use</span></td>
+            </tr>
+
+            <tr>
+              <td><span class = "span-text"> Password </span></td>
+              <td><input type = "text" id = "signup-pass" ng-model = "password" class = "text-type" /></br></td>
+              <td><span id = "span-id-signup-username" class = "span-validation">Passpord not correct</span></td>
+            </tr>
+
+            <tr>
+              <td><span class = "span-text"> ReType Password </span></td>
+              <td><input type = "text" id = "signup-re-pass" ng-model = "repassword" class = "text-type" /> </br></td>
+              <td><span id = "span-id-signup-username" class = "span-validation">password does not match</span></td>
+            </tr>
+            </table>
+
+        <div class = btn-signup-login>
+          <input type = "button" value = "Signup" ng-click = "onClickSignup()" class = "btn btn-signup-login"/>
+        </div>
+    </form>
+  </br>
+  </br>
+
+</body>
+</html>
