@@ -12,6 +12,11 @@ angular.
           when('/list-books', {
             template: '<list-books></list-books>'
           }).
-          otherwise('/add-book');
+          when('/update-book', {
+            template : '<update-book></update-book>'
+          }).
+          when('/delete-book', {
+          }).
+          otherwise('/list-books');
         }
   ]);
