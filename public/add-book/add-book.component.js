@@ -5,6 +5,6 @@ var app = angular.
     controller: 'addBookController'
   });
 
-    app.controller('addBookController', function($scope) {
+app.controller('addBookController', function($scope) {
           // console.log($location.url());
-      });
+});

@@ -25,15 +25,15 @@ app.get('/', function(req, res){
   // res.status(200).send();
 });
 
-app.get('/admin/signup', function(req, res){
-  res.sendFile(process.cwd() + '/public/signup.html');
+app.get('/signup', function(req, res) {
+  // res.sendFile(process.cwd() + '/public/signup.html');
 });
 
 app.get('/admin/login', function(req, res){
   res.sendFile(process.cwd() + '/public/login.html');
 });
 
-app.post('/admin/signup', function(req, res){
+app.post('/signup', function(req, res){
   var body = _.pick(req.body, ['email', 'password', 'username']);
   console.log("body "+JSON.stringify(body));
   var newAdmin = new Admin(body);

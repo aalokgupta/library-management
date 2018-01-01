@@ -1,27 +1,32 @@
 
-<html ng-app = "loginModule">
+<!-- <html ng-app = "loginModule">
   <head>
       <title>Login</title>
-      <link href="/public/css/main.css" rel="stylesheet" type="text/css">
+      <link href = "/public/css/main.css" rel="stylesheet" type="text/css">
       <script src = "/script/angular.min.js"></script>
       <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-route.js"></script>
-  </head>
+  </head> -->
 
-<body ng-controller = "loginController">
-  <div class = "header"></div>
+  <style>
+  h2{
+    text-align: center;
+  }
+  </style>
+
+<div ng-controller = "loginController">
   <div class = "signup-login">
     <h2 class = "signup-login-header">Login</h2>
     <table>
     <tr>
       <td> <span class = "span-text"> Email </span>  </td>
       <td>  <input type = "text" ng-model = "email" class = "text-type" /></br></td>
-      <td><span id = "span-id-signup-username" class = "span-validation">Email Id already in use</span></td>
+      <!-- <td><span id = "span-id-signup-username" class = "span-validation">Email Id already in use</span></td> -->
     </tr>
 
     <tr>
       <td><span class = "span-text"> Password </span></td>
       <td><input type = "text" ng-model = "password" class = "text-type" /></br></td>
-      <td><span id = "span-id-signup-username" class = "span-validation">Passpord not correct</span></td>
+      <!-- <td><span id = "span-id-signup-username" class = "span-validation">Passpord not correct</span></td> -->
     </tr>
   </table>
     <div class = "btn-signup-login">
@@ -30,7 +35,5 @@
   </div>
 
   </div>
-</body>
-<script src = "/client-controller/signup-controller.js"> </script>
-
-</html>
+</div>
+<!-- <script src = "/client-controller/signup-controller.js"> </script> -->

@@ -34,8 +34,8 @@ adminSchema.methods.generateAuthTokens = function(callback) {
   var access = 'auth';
   var token = jwt.sign({_id: user._id.toHexString(), access}, 'abc123').toString();
   user.tokens.push({access, token});
-  user.save().then(() => {
-      console.log("inside writing token");
+  user.save().then((document) => {
+      console.log("inside writing token"+document);
       callback(null, token);
   }).catch((err) => {
     console.log("error while save user informatin "+err);

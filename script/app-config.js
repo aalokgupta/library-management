@@ -17,6 +17,12 @@ angular.
           }).
           when('/delete-book', {
           }).
+          when('/login', {
+            template: '<log-In></log-In>'
+          }).
+          when('/signup', {
+            template: '<sign-Up></sign-Up>'
+          }).
           otherwise('/list-books');
         }
   ]);
