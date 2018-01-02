@@ -34,7 +34,17 @@ app.get('/admin/login', function(req, res){
 });
 
 app.post('/signup', function(req, res){
-  var body = _.pick(req.body, ['email', 'password', 'username']);
+  var body = _.pick(req.body, ['email', 'password', 'username', 'admin']);
+  var req_sec_key = _.pick(req.body, ['admin_secret_key']);
+
+  if(body.admin === true) {
+     // admin_secret_key has to be save into db and at the time of need it can be updated
+      if(req_sec_key.admin_secret_key !== "abc") {
+        res.status(400).send();
+        res.end();
+      }
+  }
+
   console.log("body "+JSON.stringify(body));
   var newAdmin = new Admin(body);
   newAdmin.save().then((user) => {
@@ -44,8 +54,8 @@ app.post('/signup', function(req, res){
         console.log("error while generating auth "+err);
         res.status(400).send();
       }
-      console.log("user save into db and generated token is "+token);
       res.header('x-auth', token);
+      console.log("user save into db and generated token is "+token);
       res.status(200).send(); // need to redirect to admin dashboard
     });
   }).catch( (err) => {
@@ -53,7 +63,7 @@ app.post('/signup', function(req, res){
   });
 });
 
-app.post('/admin/login', function(req, res){
+app.post('/login', function(req, res){
   var body = _.pick(req.body, ['email', 'password']);
   Admin.findByCredentials(body.email, body.password).then((user) => {
     user.generateAuthTokens(function(err, token){

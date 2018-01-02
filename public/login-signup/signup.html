@@ -21,6 +21,25 @@
           <table>
             <tr>
               <td>
+                <span class = "span-text">  Admin/User </span>
+              </td>
+              <td>
+                <select ng-model = "user_type.id" name = "user_type" class = "text-style" convert-to-number>
+                  <option value = "0">User</option>
+                  <option value = "1">Admin</option>
+                </select>
+              </td>
+            </tr>
+
+            <tr>
+              <td> </td>
+              <td>
+                <input type = "text" class = "text-style" placeholder="admin secret key" name = "admin_secret_key" ng-model = "admin_secret_key"  ng-Required = "true" ng-hide = "user_type.id == 0"></input>
+              </td>
+            </tr>
+
+            <tr>
+              <td>
                 <span class = "span-text"> UserName </span>
               </td>
               <td>

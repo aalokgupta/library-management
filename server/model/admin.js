@@ -21,6 +21,10 @@ var adminSchema = new mongoose.Schema({
               minlength: 4,
               trim: true
             },
+            admin: {
+              type: Boolean,
+              required: true
+            },
             tokens: [{
               access: {type: String, required: true},
               token: {type: String, required: true}
