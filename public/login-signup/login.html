@@ -1,60 +1,211 @@
 
-<!-- <html ng-app = "loginModule">
-  <head>
-      <title>Login</title>
-      <link href = "/public/css/main.css" rel="stylesheet" type="text/css">
-      <script src = "/script/angular.min.js"></script>
-      <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-route.js"></script>
-  </head> -->
+    <style>
 
-  <style>
+    .container {
+      height: auto;
+      width: 50%;
+      margin: 5% auto;
+      border-radius: 8px;
+      background-color: #777;
+      border: 1px solid #999;
+      text-align: center;
+    }
+    .container-login {
+      width: auto;
+
+    }
+    .container-row1{
+      /*width: 80%;*/
+      width: 100%;
+      margin: auto auto;
+      /*display: inline-block;*/
+    }
+    .container-row2{
+      width: 50%;
+      /*min-width: 500px;*/
+      margin: 1% 1%;
+      display: inline-block;
+      padding: 2%;
+    }
+    .container-row3{
+      width: 15%;
+      /*min-width: 100px;*/
+      margin: 2% 1%;
+      display: inline-block;
+    }
+    .container-row4 {
+        width: 50%;
+        margin: 2% auto;
+    }
+    /*ul {
+      display: inline;
+    }*/
+    li {
+      display: inline-block;
+      min-width: 200px;
+      min-height: 40px;
+      /*margin: 5px 5%;*/
+    }
+    input, select{
+      max-width: 250px;
+      min-height: 35px;
+      font-size: 25px;
+    }
+    </style>
+    <div class = "container" ng-controller = "loginController">
+      <div class = "container-login">
+        <form name = "logInForm">
+          <div class = "container-row1">
+            <ul>
+              <li><label>User/Admin</label></li>
+              <li><select ng-model = "user_type.id" name = "user_type"  convert-to-number>
+                <option value = "0">User</option>
+                <option value = "1">Admin</option>
+                </select>
+              </li>
+              <li><input type = "text" placeholder="Secret-key" name = "admin_secret_key" ng-model = "admin_secret_key"  ng-Required = "true" ng-hide = "user_type.id == 0"></input></li>
+            </ul>
+          </div>
+
+          <div class = "container-row1">
+            <ul>
+              <li><label>Email</label></li>
+              <li><input type = "email" placeholder="email" name ="email" ng-model = "email" ng-Required = "true"></input></li>
+              <li><span  class = "error" ng-show = "logInForm.email.$error.email">Email is not valid.</span></li>
+            </ul>
+          </div>
+
+          <div class = "container-row1">
+            <ul>
+              <li><label>Password</label></li>
+              <li><input type = "password" name = "password" ng-model = "password" ng-Required = "true"></input></li>
+              <li><span  class = "error" ng-show = "logInForm.password.$error.required">password required</span></li>
+            </ul>
+          </div>
+
+          <div class = "container-row1">
+            <ul>
+              <li></li>
+              <li><input type = "button" ng-click = "onClickLogin()" value = "Login" style = "width: 200px;"></input></li>
+              <li></li>
+            </ul>
+          </div>
+        </form>
+      </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+  <!-- <style>
   h2{
     text-align: center;
+  }
+  .login-container {
+    display: block;
+    width: 50%;
+    margin: auto;
+  }
+  table {
+    width: 100%;
+    margin: 0 auto;
+    /*padding: 5px 5px;*/
+    display: block;
+    /*text-align: center;*/
+  }
+  tr {
+    width: 100%;
+  }
+
+  .td-span {
+    font-style: normal;
+    font-family: sans-serif;
+    font-weight: bold;
+    padding: 5px 5px;
+
+  }
+  .td-input {
+    padding: 1px 1px;
+    margin: 0 2%;
+    height: 2.5em;
+  }
+  td {
+    margin: 0 2px;
+  }
+  input, select{
+    width: 100%;
+    height: 3em;
+    margin: 0.3em;
+    font-size: 20px;
   }
   </style>
 
 <div ng-controller = "loginController">
   <div class = "signup-login">
-    <h2 class = "signup-login-header">Login</h2>
-    <table>
+      <div class = "login-container">
+        <h2>Login</h2>
+      </div>
 
-      <tr>
-        <td>
-          <span class = "span-text">  Admin/User </span>
-        </td>
-        <td>
-          <select ng-model = "user_type.id" name = "user_type" class = "text-style" convert-to-number>
-            <option value = "0">User</option>
-            <option value = "1">Admin</option>
-          </select>
-        </td>
-      </tr>
+      <div class = "login-container">
+        <form name = "logInForm">
+          <table>
+            <col width = "100">
+            <col width = "400">
+            <col width = "100">
+            <tr>
+              <td class = "td-span">
+                <span>  Admin/User </span>
+              </td>
+              <td class = "td-input">
+                <select ng-model = "user_type.id" name = "user_type"  convert-to-number>
+                  <option value = "0">User</option>
+                  <option value = "1">Admin</option>
+                </select>
+              </td>
+            </tr>
 
-      <tr>
-        <td> </td>
-        <td>
-          <input type = "text" class = "text-style" placeholder="admin secret key" name = "admin_secret_key" ng-model = "admin_secret_key"  ng-Required = "true" ng-hide = "user_type.id == 0"></input>
-        </td>
-      </tr>
+            <tr>
+              <td class = "td-span"> </td>
+              <td class = "td-input">
+                <input type = "text"  placeholder="admin secret key" name = "admin_secret_key" ng-model = "admin_secret_key"  ng-Required = "true" ng-hide = "user_type.id == 0"></input>
+              </td>
+              <td class = "td-span">
+                  <span  class = "error" ng-show = "logInForm.admin_secret_key.$error.required">Admin key required</span>
+              </td>
+            </tr>
 
 
-    <tr>
-      <td> <span class = "span-text"> Email </span>  </td>
-      <td>  <input type = "text" ng-model = "email" class = "text-type" /></br></td>
-      <!-- <td><span id = "span-id-signup-username" class = "span-validation">Email Id already in use</span></td> -->
-    </tr>
+          <tr>
+            <td class = "td-span"> <span> Email </span>  </td>
+            <td class = "td-input"> <input type = "email" name ="email" ng-model = "email" ng-Required = "true"/></td>
+            <td>
+                <span  class = "error" ng-show = "logInForm.email.$error.email">Email is not valid.</span>
+            </td>
+          </tr>
+          <tr>
+            <td class = "td-span"><span> Password </span></td>
+            <td class = "td-input"><input type = "password" name = "password" ng-model = "password" ng-Required = "true"/></br></td>
+            <td>
+                <span  class = "error" ng-show = "logInForm.email.$error.required">password required</span>
+            </td>
 
-    <tr>
-      <td><span class = "span-text"> Password </span></td>
-      <td><input type = "text" ng-model = "password" class = "text-type" /></br></td>
-      <!-- <td><span id = "span-id-signup-username" class = "span-validation">Passpord not correct</span></td> -->
-    </tr>
-  </table>
-    <div class = "btn-signup-login">
-      <input type = "button" ng-click = "onClickLogin()" value = "Login" class = "btn btn-signup-login"/>
+          </tr>
+        </table>
+
+        </form>
+
+      </div>
+      <div class = "login-container">
+          <input type = "button" ng-click = "onClickLogin()" value = "Login" style = "margin: 4%; font-size: 20px; font-weight: bold;"/>
+      </div>
     </div>
-  </div>
 
-  </div>
-</div>
+  </div> -->
 <!-- <script src = "/client-controller/signup-controller.js"> </script> -->

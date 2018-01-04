@@ -1,5 +1,7 @@
-angular.
-      module('logIn', []);
+angular.module('logIn', [
+    'ngRoute',
+    'ngStorage']);
 
-angular.
-      module('signUp', []);
+angular.module('signUp', [
+    'ngRoute',
+    'ngStorage']);

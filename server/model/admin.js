@@ -93,10 +93,10 @@ adminSchema.statics.findByCredentials = function (email, password) {
   });
 };
 
-adminSchema.statics.findBytoken = function(token){
+adminSchema.statics.findBytoken = function(token, callback){
   var User = this;
   var decoded;
-  try{
+   try{
     decoded = jwt.verify(token, 'abc123');
   } catch(err){
     return new Promise((resolve, reject) => {
@@ -104,11 +104,17 @@ adminSchema.statics.findBytoken = function(token){
       reject(err);
     });
   }
-  return User.findOne({
-    '_id': decoded._id,
-    'tokens.token': token,
-    'tokens.access': 'auth'
-  });
+
+  User.findOne({
+  '_id': decoded._id,
+  'tokens.token': token,
+  'tokens.access': 'auth'
+  }, function(err, user){
+      if(err)
+        return callback(err, null);
+      console.log("User found "+user);
+      return callback(null, user);
+    });
 }
 
 adminSchema.methods.removetoken = function(token){

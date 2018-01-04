@@ -1,7 +1,7 @@
-angular.module('libraryManagement', [
+angular.module('libraryManagement', ['ngStorage',
     'ngRoute',
     'addBook',
     'updateBook',
-    'logIn',
+    'listBooks',
     'signUp',
-    'listBooks']);
+    'logIn']);
