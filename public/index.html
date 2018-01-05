@@ -31,13 +31,15 @@
     <!-- <script type="text/javascript" src = "public/Scripts/angular.min.js"></script> -->
   </head>
   <body>
-    <div class = "nav-container">
+    <div ng-controller = "libraryManagementController" ng-model = "nav_template" ng-include = "nav_template.url">
+    </div>
+    <!-- <div class = "nav-container">
       <div class = "nav">
         <div class = "left-nav-menu">
           <ul>
             <li><a href = "#/!">Home</a></li>
             <li><a href = "#!add-book">Books</a></li>
-            <li><a href = "#">Users</a> </li>
+            <li><a href = "#">Users</a></li>
           </ul>
         </div><div
         class = "right-nav-menu">
@@ -49,7 +51,7 @@
           </ul>
         </div>
       </div>
-    </div>
+    </div> -->
 
     <div ng-view> </div>
   <!--

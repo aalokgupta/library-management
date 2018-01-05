@@ -55,4 +55,26 @@ listBookApp.controller('listBookController', function($scope, $location, $sessio
           console.log($sessionStorage.admin);
       }
     }
+
+    $scope.onClickLogout = function() {
+      console.log("logout clicked");
+      var req = {
+        method: 'DELETE',
+        url: `/logout`,
+        headers: {
+          "access-x-auth": $sessionStorage.token
+          // "admin": $sessionStorage.admin
+          }
+      }
+      $http(req).then((response) => {
+        if(response.status === 200) {
+          $sessionStorage.token = "";
+          $sessionStorage.admin = "";
+          console.log("token deleted");
+          $location.path("https://127.0.0.1:8080/#!/login");
+        }
+      }, (response) => {
+          console.log("not able to delete token ");
+      });
+    }
     });

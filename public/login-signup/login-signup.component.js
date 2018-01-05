@@ -35,7 +35,7 @@ loginApp.controller('loginController', function($scope, $http, $sessionStorage, 
           if(response.status === 200){
             $sessionStorage.token = response.headers("access-x-auth");
             $sessionStorage.admin = response.headers("admin");
-            console.log("token = "+$sessionStorage.token+"  "+$sessionStorage.admin)
+            console.log("token = "+$sessionStorage.token+"  "+$sessionStorage.admin);
             $location.path('https://127.0.0.1:8080');
             // change the url to home after providing message
           }
@@ -98,7 +98,8 @@ signupApp.controller('signupController', function($scope, $http, $location, $ses
                   if(response.status === 200){
                     // console.log("after signup string return from server is "+response.headers("x-auth"));
                     $sessionStorage.token = response.headers("access-x-auth");
-                    console.log("token = "+$sessionStorage.token);
+                    $sessionStorage.admin = response.headers("admin");
+                    console.log("token = "+$sessionStorage.token+"  "+$sessionStorage.admin);
                     $location.path('https://127.0.0.1:8080');
                     // change the url to home after providing message
                   }

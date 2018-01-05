@@ -108,13 +108,15 @@ app.post('/update/book/:id', authenticateUser, function(req, res){
   // Admin.updateBookInfo();
 });
 
-app.delete('/admin/logout', authenticateUser, function(req, res){
+app.delete('/logout', authenticateUser, function(req, res){
   if(!req.user){
     console.log("user token removed from db");
     res.status(400).send();
   }
   req.user.removetoken(req.token).then(() => {
     res.status(200).send();
+  }, () => {
+    console.log("error occured while removing token from database");
   });
 });
 
