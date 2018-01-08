@@ -14,81 +14,87 @@
   }
   </style>
 
-<div ng-controller = "signupController">
-  <div class = "signup-login">
-      <h2 class = "signup-login-header">SignUp</h2>
-      <form name = "signupForm" ng-controller = "signupController" novalidate>
-          <table>
-            <tr>
-              <td>
-                <span class = "span-text">  Admin/User </span>
-              </td>
-              <td>
-                <select ng-model = "user_type.id" name = "user_type" class = "text-style" convert-to-number>
-                  <option value = "0">User</option>
-                  <option value = "1">Admin</option>
-                </select>
-              </td>
-            </tr>
+<div>
+  <div ng-controller = "signupController" ng-model = "nav_template" ng-include = "nav_template.url">
+  </div>
 
-            <tr>
-              <td> </td>
-              <td>
-                <input type = "text" class = "text-style" placeholder="admin secret key" name = "admin_secret_key" ng-model = "admin_secret_key"  ng-Required = "true" ng-hide = "user_type.id == 0"></input>
-              </td>
-            </tr>
+  <div ng-controller = "signupController">
+    <div class = "signup-login">
+        <h2 class = "signup-login-header">SignUp</h2>
+        <form name = "signupForm" ng-controller = "signupController" novalidate>
+            <table>
+              <tr>
+                <td>
+                  <span class = "span-text">  Admin/User </span>
+                </td>
+                <td>
+                  <select ng-model = "user_type.id" name = "user_type" class = "text-style" convert-to-number>
+                    <option value = "0">User</option>
+                    <option value = "1">Admin</option>
+                  </select>
+                </td>
+              </tr>
 
-            <tr>
-              <td>
-                <span class = "span-text"> UserName </span>
-              </td>
-              <td>
-                <input type = "text" id = "signup-username" name = "username" ng-model = "username" class = "text-type"  ng-Required = "true" ng-Minlength = "5"></br>
-              </td>
-              <td>
+              <tr>
+                <td> </td>
+                <td>
+                  <input type = "text" class = "text-style" placeholder="admin secret key" name = "admin_secret_key" ng-model = "admin_secret_key"  ng-Required = "true" ng-hide = "user_type.id == 0"></input>
+                </td>
+              </tr>
 
-                  <!-- <span  style="color:blue" ng-show = "signupForm.username.$dirty"> -->
-                  <span  class = "error" ng-show = "signupForm.username.$error.required">Username is required.</span>
-                  <span  class = "error" ng-show = "signupForm.username.$error.minlength">length should of more than 4</span>
-                  <!-- </span> -->
-                <!-- <span  class = "span-validation">username already used</span> -->
-              </td>
+              <tr>
+                <td>
+                  <span class = "span-text"> UserName </span>
+                </td>
+                <td>
+                  <input type = "text" id = "signup-username" name = "username" ng-model = "username" class = "text-type"  ng-Required = "true" ng-Minlength = "5"></br>
+                </td>
+                <td>
 
-            </tr>
+                    <!-- <span  style="color:blue" ng-show = "signupForm.username.$dirty"> -->
+                    <span  class = "error" ng-show = "signupForm.username.$error.required">Username is required.</span>
+                    <span  class = "error" ng-show = "signupForm.username.$error.minlength">length should of more than 4</span>
+                    <!-- </span> -->
+                  <!-- <span  class = "span-validation">username already used</span> -->
+                </td>
 
-            <tr>
-              <td> <span class = "span-text"> Email </span>  </td>
-              <td><input type = "email" name = "email" id = "signup-email"  ng-model = "email" class = "text-type" ng-Required = "true"/></br></td>
+              </tr>
 
-              <td>
-                <span  class = "error" ng-show = "signupForm.email.$error.required">Email id require.</span>
-                <span class = "error" ng-show = "signupForm.email.$error.email">Email id is not valid</span>
-              </td>
-            </tr>
+              <tr>
+                <td> <span class = "span-text"> Email </span>  </td>
+                <td><input type = "email" name = "email" id = "signup-email"  ng-model = "email" class = "text-type" ng-Required = "true"/></br></td>
 
-            <tr>
-              <td><span class = "span-text"> Password </span></td>
-              <td><input type = "password" name = "password" ng-model = "password" class = "text-type" ng-Required = "true" ng-Minlength = "5"/></br></td>
-              <td>
-                <span class = "error" ng-show = "signupForm.password.$error.required">required!</span>
-                <span class = "error" ng-show = "signupForm.password.$error.minlength">min length is 5</span>
-              </td>
-            </tr>
+                <td>
+                  <span  class = "error" ng-show = "signupForm.email.$error.required">Email id require.</span>
+                  <span class = "error" ng-show = "signupForm.email.$error.email">Email id is not valid</span>
+                </td>
+              </tr>
 
-            <tr>
-              <td><span class = "span-text"> ReType Password </span></td>
-              <td><input type = "password" name = "repassword" ng-model = "repassword" class = "text-type" ng-Required = "true"/> </br></td>
-              <td>
-                <span class = "error" ng-show = "signupForm.repassword.$error.required">required!</span>
-                <span class = "error" ng-show = "signupForm.repassword.$error.minlength">min length is 5</span>
-              </td>
-            </tr>
-            </table>
+              <tr>
+                <td><span class = "span-text"> Password </span></td>
+                <td><input type = "password" name = "password" ng-model = "password" class = "text-type" ng-Required = "true" ng-Minlength = "5"/></br></td>
+                <td>
+                  <span class = "error" ng-show = "signupForm.password.$error.required">required!</span>
+                  <span class = "error" ng-show = "signupForm.password.$error.minlength">min length is 5</span>
+                </td>
+              </tr>
+              <tr>
 
-        <div class = btn-signup-login>
-          <input type = "button" value = "Signup" ng-click = "onClickSignup()" class = "btn btn-signup-login"/>
-        </div>
-    </form>
-  </br>
-  </br>
+                <td><span class = "span-text"> ReType Password </span></td>
+                <td><input type = "password" name = "repassword" ng-model = "repassword" class = "text-type" ng-Required = "true"/> </br></td>
+                <td>
+                  <span class = "error" ng-show = "signupForm.repassword.$error.required">required!</span>
+                  <span class = "error" ng-show = "signupForm.repassword.$error.minlength">min length is 5</span>
+                </td>
+              </tr>
+              </table>
+
+          <div class = btn-signup-login>
+            <input type = "button" value = "Signup" ng-click = "onClickSignup()" class = "btn btn-signup-login"/>
+          </div>
+      </form>
+    </br>
+    </br>
+  </div>
+
 </div>

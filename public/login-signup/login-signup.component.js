@@ -4,8 +4,9 @@ var loginApp = angular.module('logIn').
           controller: 'loginController'
         });
 
-loginApp.controller('loginController', function($scope, $http, $sessionStorage, $location){
+loginApp.controller('loginController', function($scope, $http, $sessionStorage, $location, $window, $route){
   // read username password admin/user and secret key
+  $scope.nav_template =  {name: "login", url: "/public/login-signup/nav-login-signup.html"};
 
   $scope.onClickLogin = function() {
 
@@ -35,8 +36,10 @@ loginApp.controller('loginController', function($scope, $http, $sessionStorage, 
           if(response.status === 200){
             $sessionStorage.token = response.headers("access-x-auth");
             $sessionStorage.admin = response.headers("admin");
+            $sessionStorage.isUserLoggedIn = true;
+            $sessionStorage.pageReloadRequire = true;
             console.log("token = "+$sessionStorage.token+"  "+$sessionStorage.admin);
-            $location.path('https://127.0.0.1:8080');
+            $window.location.href =  '/#!/list-books';
             // change the url to home after providing message
           }
           else if(response.status === 400) {
@@ -64,12 +67,14 @@ var signupApp = angular.module('signUp').
           controller: 'signupController'
         });
 
-signupApp.controller('signupController', function($scope, $http, $location, $sessionStorage){
+signupApp.controller('signupController', function($scope, $http, $location, $sessionStorage, $route){
     // check if user already present
     // //make signup text as string and number only
     // if($scope.user_type.id === 1){
     //   $scope.signupForm.admin_secret_key.visible
     // }
+
+    $scope.nav_template =  {name: "signup", url: "/public/login-signup/nav-login-signup.html"};
     $scope.onClickSignup = function() {
 
       if(parseInt($scope.user_type.id) === 1 && $scope.signupForm.admin_secret_key.$valid === false) {
@@ -99,8 +104,10 @@ signupApp.controller('signupController', function($scope, $http, $location, $ses
                     // console.log("after signup string return from server is "+response.headers("x-auth"));
                     $sessionStorage.token = response.headers("access-x-auth");
                     $sessionStorage.admin = response.headers("admin");
+                    $sessionStorage.isUserLoggedIn = true;
                     console.log("token = "+$sessionStorage.token+"  "+$sessionStorage.admin);
-                    $location.path('https://127.0.0.1:8080');
+                    // $location.path('https://127.0.0.1:8080');
+                    $window.location.href =  '/#!/list-books'
                     // change the url to home after providing message
                   }
                   else if(response.status === 400) {

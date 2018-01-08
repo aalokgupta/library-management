@@ -1,92 +1,112 @@
+<div>
+  <div class = "nav-container" ng-controller = "addBookController">
+    <div class = "nav">
+      <div class = "left-nav-menu">
+        <ul>
+          <li><a href = "#/!">Home</a></li>
+          <li><a href = "#!add-book">Books</a></li>
+          <li><a href = "#">Users</a></li>
+        </ul>
+      </div><div
+      class = "right-nav-menu">
+        <ul>
+          <li></li>
+          <li><a href = "#!profile">Profile</a></li>
+          <li><a href = "" ng-click = "onClickLogout()">Logout</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
 
-
-<div class = "book-body">
-  <div class = "body-left-nav">
-   <div class = "body-left-nav-container">
-     <ul>
-       <li><a href = "#!list-books">All Books</a></li>
-       <li><a href = "#!add-book">Add Book</a></li>
-       <li><a href = "#!update-book">Update Book</a></li>
-       <li><a href = "#!remove-book">Remove Book</a></li>
-     </ul>
-   </div>
- </div>
-
-   <div class = "add-book-body" ng-app = "addBook">
-     <div class = "add-book-container" ng-controller = "addBookController">
-       <table>
-         <tr>
-         <td class = "left-col">
-           <label>Category:</label>
-         </td>
-         <td class = "right-col">
-           <select class = "add-book-select-style">
-             <option>A</option>
-             <option>B</option>
-             <option>C</option>
-             <option>D</option>
-             <option>E</option>
-             <option>Other</option>
-           </select>
-         </td>
-       </tr>
-
-         <tr>
-           <td class = "left-col">
-             <label>Book Name:</label>
-           </td>
-           <td class = "right-col">
-             <input type = "text" placeholder="Book name" class = "text-style"></input>
-           </td>
-         </tr>
-
-         <tr>
-           <td class = "left-col">
-             <label>Author:</label>
-           </td>
-           <td class = "right-col">
-             <input type = "text" placeholder="Author" class = "text-style"></input>
-           </td>
-         </tr>
-
-         <tr>
-           <td class = "left-col">
-             <label>ISBN:</label>
-           </td>
-           <td class = "right-col">
-             <input type = "text" placeholder="ISBN" class = "text-style"></input>
-           </td>
-         </tr>
-
-         <tr>
-           <td class = "left-col">
-             <label>Company ID:</label>
-           </td>
-           <td class = "right-col">
-             <input type = "text" placeholder="Company-Id" class = "text-style"></input>
-           </td>
-         </tr>
-
-         <tr>
-           <td class = "left-col">
-             <label>No of copy:</label>
-           </td>
-           <td class = "right-col">
-             <input type = "text" placeholder = "No of copy" class = "text-style" style = "width: 50%"></input>
-           </td>
-         </tr>
-
-
-         <tr>
-           <td class = "left-col"></td>
-           <td class = "right-col">
-             <input type = "button" value = "Save Book" class = "btn"></input>
-           </td>
-         </tr>
-       </table>
+  <div class = "book-body">
+    <div class = "body-left-nav">
+     <div class = "body-left-nav-container">
+       <ul>
+         <li><a href = "#!list-books">All Books</a></li>
+         <li><a href = "#!add-book">Add Book</a></li>
+         <li><a href = "#!update-book">Update Book</a></li>
+         <li><a href = "#!remove-book">Remove Book</a></li>
+       </ul>
      </div>
-     <!-- <div class = "img-container">
-       <img src = "/public/img/169367.svg" alt = "book image"/>
-     </div> -->
    </div>
+
+     <div class = "add-book-body" ng-app = "addBook">
+       <div class = "add-book-container" ng-controller = "addBookController">
+         <table>
+           <tr>
+           <td class = "left-col">
+             <label>Category:</label>
+           </td>
+           <td class = "right-col">
+             <select class = "add-book-select-style">
+               <option>A</option>
+               <option>B</option>
+               <option>C</option>
+               <option>D</option>
+               <option>E</option>
+               <option>Other</option>
+             </select>
+           </td>
+         </tr>
+
+           <tr>
+             <td class = "left-col">
+               <label>Book Name:</label>
+             </td>
+             <td class = "right-col">
+               <input type = "text" placeholder="Book name" class = "text-style"></input>
+             </td>
+           </tr>
+
+           <tr>
+             <td class = "left-col">
+               <label>Author:</label>
+             </td>
+             <td class = "right-col">
+               <input type = "text" placeholder="Author" class = "text-style"></input>
+             </td>
+           </tr>
+
+           <tr>
+             <td class = "left-col">
+               <label>ISBN:</label>
+             </td>
+             <td class = "right-col">
+               <input type = "text" placeholder="ISBN" class = "text-style"></input>
+             </td>
+           </tr>
+
+           <tr>
+             <td class = "left-col">
+               <label>Company ID:</label>
+             </td>
+             <td class = "right-col">
+               <input type = "text" placeholder="Company-Id" class = "text-style"></input>
+             </td>
+           </tr>
+
+           <tr>
+             <td class = "left-col">
+               <label>No of copy:</label>
+             </td>
+             <td class = "right-col">
+               <input type = "text" placeholder = "No of copy" class = "text-style" style = "width: 50%"></input>
+             </td>
+           </tr>
+
+
+           <tr>
+             <td class = "left-col"></td>
+             <td class = "right-col">
+               <input type = "button" value = "Save Book" class = "btn"></input>
+             </td>
+           </tr>
+         </table>
+       </div>
+       <!-- <div class = "img-container">
+         <img src = "/public/img/169367.svg" alt = "book image"/>
+       </div> -->
+     </div>
+  </div>
+
 </div>

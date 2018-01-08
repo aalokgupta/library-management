@@ -1,40 +1,64 @@
-    <div class = "main-body" ng-controller = "listBookController">
-      <div class = "container">
-        <div class = "search-container">
-          <select class = "select-style">
-            <option>A</option>
-            <option>B</option>
-            <option>C</option>
-            <option>D</option>
-            <option>E</option>
-            <option>F</option>
-          </select>
-          <input type="text" class = "text-style"/>
-        </div>
-        <div class = "book-list-container">
-          <ol class = "ol-style" ng-repeat = "book in books">
-            <li class = "li-book-list">
-              <div class = "book-info">
-                <h2> {{ book.name }}</h2>
-                <div style = "clear: both">
-                  <label> Author: {{ book.author }}</label></br>
-                  <label> No of copy: {{ book.no_of_copy }}</label></br>
-                  <label> Available copy: {{ book.no_of_available_copy }}</label></br>
-                </div>
-                <div class = "">
-                  <input type = "button" value = "Edit Info" class = "btn-req-group" ng-click = "onClickUpdate(book)"/>
-                  <input type = "button" value = "Delete Book" class = "btn-req-group" ng-click = "onClickDelete(book)"/>
-                </div>
-              </div>
-              <div class = "book-image">
-                <img src = "/public/img/169367.svg" alt = "book-image" class = "img-style"/>
-              </div>
-            </li>
-          </ol>
-
+<div ng-controller = "listBookController">
+  <div>
+    <div class = "nav-container">
+      <div class = "nav">
+        <div class = "left-nav-menu">
+          <ul>
+            <li><a href = "#/!">Home</a></li>
+            <li><a href = "#!add-book">Books</a></li>
+            <li><a href = "#">Users</a></li>
+          </ul>
+        </div><div
+        class = "right-nav-menu">
+          <ul>
+            <li></li>
+            <li><a href = "#!profile">Profile</a></li>
+            <li><a href = "" ng-click = "onClickLogout()">Logout</a></li>
+          </ul>
         </div>
       </div>
     </div>
+  </div>
+
+  <div class = "main-body">
+    <div class = "container">
+      <div class = "search-container">
+        <select class = "select-style">
+          <option>A</option>
+          <option>B</option>
+          <option>C</option>
+          <option>D</option>
+          <option>E</option>
+          <option>F</option>
+        </select>
+        <input type="text" class = "text-style"/>
+      </div>
+      <div class = "book-list-container">
+        <ol class = "ol-style" ng-repeat = "book in books">
+          <li class = "li-book-list">
+            <div class = "book-info">
+              <h2> {{ book.name }}</h2>
+              <div style = "clear: both">
+                <label> Author: {{ book.author }}</label></br>
+                <label> No of copy: {{ book.no_of_copy }}</label></br>
+                <label> Available copy: {{ book.no_of_available_copy }}</label></br>
+              </div>
+              <div class = "">
+                <input type = "button" value = "Edit Info" class = "btn-req-group" ng-click = "onClickUpdate(book)"/>
+                <input type = "button" value = "Delete Book" class = "btn-req-group" ng-click = "onClickDelete(book)"/>
+              </div>
+            </div>
+            <div class = "book-image">
+              <img src = "/public/img/169367.svg" alt = "book-image" class = "img-style"/>
+            </div>
+          </li>
+        </ol>
+
+      </div>
+    </div>
+  </div>
+</div>
+
     <!-- <ol class = "ol-style">
       <li class = "li-book-list">
         <div class = "book-image">

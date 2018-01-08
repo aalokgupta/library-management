@@ -5,7 +5,7 @@ var listBookApp = angular.
                     controller: 'listBookController'
                   });
 
-listBookApp.controller('listBookController', function($scope, $location, $sessionStorage, $http) {
+listBookApp.controller('listBookController', function($scope, $location, $sessionStorage, $http, $window, $route) {
     $scope.books = [{name: "Pratical unix & Internet Security",
                      author: "Simon Garfinkel and gene Spafford",
                     no_of_copy: "10",
@@ -21,6 +21,13 @@ listBookApp.controller('listBookController', function($scope, $location, $sessio
                      no_of_copy: "5",
                      no_of_available_copy: 2}
                   ];
+                  console.log("page reload = "+$sessionStorage.pageReloadRequire);
+      if($sessionStorage.pageReloadRequire) {
+        if(true === $sessionStorage.pageReloadRequire) {
+          $sessionStorage.pageReloadRequire = false;
+          $route.reload();
+        }
+      }
 
     $scope.onClickUpdate = function() {
       if($sessionStorage.token) {
@@ -71,7 +78,7 @@ listBookApp.controller('listBookController', function($scope, $location, $sessio
           $sessionStorage.token = "";
           $sessionStorage.admin = "";
           console.log("token deleted");
-          $location.path("https://127.0.0.1:8080/#!/login");
+          $window.location.href = "/#!/login";
         }
       }, (response) => {
           console.log("not able to delete token ");
