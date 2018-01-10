@@ -68,7 +68,8 @@ app.post('/signup', function(req, res){
   });
 });
 
-app.post('/login', function(req, res){
+app.post('/login', function(req, res) {
+  console.log("/login requested ");
   var body = _.pick(req.body, ['email', 'password', 'admin']);
   if(true === body.admin) {
     var admin_secret_key = _.pick(req.body, ['admin_secret_key']).admin_secret_key
@@ -76,7 +77,9 @@ app.post('/login', function(req, res){
         res.status(400).send({auth: "Not authorise user"});
         res.end();
     }
+    console.log("admin log-in");
   }
+  console.log("User log-in");
     // Admin.findBytoken(req.header("access-x-auth")).then((user) => {
     //   console.log("token from header = "+req.header("access-x-auth"))
     //   res.header("access-x-auth", user.tokens[0].token);
@@ -87,11 +90,13 @@ app.post('/login', function(req, res){
     // });
 
     Admin.findByCredentials(body.email, body.password).then((user) => {
+      console.log("user found = "+user);
       user.generateAuthTokens(function(err, token) {
         if(err) {
             res.status(401).send();
             res.end();
         }
+        console.log("token generated");
         res.header('access-x-auth', token);
         res.header('admin', body.admin);
         res.status(200).send();
@@ -101,9 +106,14 @@ app.post('/login', function(req, res){
     });
 });
 
-app.post('/update/book/:id', authenticateUser, function(req, res){
+app.post('/update/book', function(req, res){
   console.log("user authenticated");
-  res.status(200).send();
+  var book2 = {name: "Effective STL",
+                  author: "scott mayers",
+                  no_of_copy: "20",
+                  no_of_available_copy: 20}
+
+  res.status(200).send(book2);
   res.end();
   // Admin.updateBookInfo();
 });
@@ -118,6 +128,47 @@ app.delete('/logout', authenticateUser, function(req, res){
   }, () => {
     console.log("error occured while removing token from database");
   });
+});
+
+app.get('/get-all-books', authenticateUser, function(req, res){
+
+      var book1 = {name: "Pratical unix & Internet Security",
+                       author: "Simon Garfinkel and gene Spafford",
+                      no_of_copy: "10",
+                      no_of_available_copy: 8};
+
+      var book2 = {name: "Effective STL",
+                      author: "scott mayers",
+                      no_of_copy: "20",
+                      no_of_available_copy: 20}
+
+      var book3 =   {name: "Data structure in C",
+                       author: "Narsimha karanuchi",
+                       no_of_copy: "5",
+                       no_of_available_copy: 2}
+
+    var initialize_books = function(callback){
+      var books = [];
+      for(var i = 0; i < 100; i++) {
+        if(i % 3 === 0) {
+          books.push(book1);
+        }
+        else if(i % 3 === 1) {
+          books.push(book2);
+        }
+        if(i % 3 === 2) {
+          books.push(book3);
+        }
+      }
+      callback(null, books);
+    }
+
+    initialize_books(function(err, books){
+      console.log("page reload inside get all book");
+      res.status(200).send(books);
+      res.end();
+    });
+
 });
 
 app.listen(port, (err) => {

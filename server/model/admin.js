@@ -39,7 +39,7 @@ adminSchema.methods.generateAuthTokens = function(callback) {
   var token = jwt.sign({_id: user._id.toHexString(), access}, 'abc123').toString();
   user.tokens.push({access, token});
   user.save().then((document) => {
-      console.log("inside writing token"+document);
+      // console.log("inside writing token"+document);
       callback(null, token);
   }).catch((err) => {
     console.log("error while save user informatin "+err);
@@ -110,9 +110,10 @@ adminSchema.statics.findBytoken = function(token, callback){
   'tokens.token': token,
   'tokens.access': 'auth'
   }, function(err, user){
-      if(err)
+      if(err) {
         return callback(err, null);
-      console.log("User found "+user);
+      }
+      console.log("User found ");
       return callback(null, user);
     });
 }

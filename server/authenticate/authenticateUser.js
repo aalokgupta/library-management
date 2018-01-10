@@ -4,9 +4,9 @@ var bcrypt = require('bcryptjs');
 
 var authenticateUser = function(req, response, next){
   var token = req.header('access-x-auth');
-  console.log("token = "+token);
+  // console.log("token = "+token);
   Admin.findBytoken(token, function(err, user){
-      if(err){
+      if(err) {
         console.log("user not found");
         response.status(400).send({"auth": "user not found"});
         next();

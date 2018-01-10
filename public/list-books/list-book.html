@@ -11,9 +11,7 @@
         </div><div
         class = "right-nav-menu">
           <ul>
-            <li></li>
-            <li><a href = "#!profile">Profile</a></li>
-            <li><a href = "" ng-click = "onClickLogout()">Logout</a></li>
+            <li ng-repeat = "ref in right_nav_ref"><a href = "{{ ref.url }}" ng-click = onClickLogOut(ref)>{{ref.name}}</a></li>
           </ul>
         </div>
       </div>

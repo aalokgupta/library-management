@@ -37,7 +37,6 @@ loginApp.controller('loginController', function($scope, $http, $sessionStorage, 
             $sessionStorage.token = response.headers("access-x-auth");
             $sessionStorage.admin = response.headers("admin");
             $sessionStorage.isUserLoggedIn = true;
-            $sessionStorage.pageReloadRequire = true;
             console.log("token = "+$sessionStorage.token+"  "+$sessionStorage.admin);
             $window.location.href =  '/#!/list-books';
             // change the url to home after providing message
@@ -67,7 +66,7 @@ var signupApp = angular.module('signUp').
           controller: 'signupController'
         });
 
-signupApp.controller('signupController', function($scope, $http, $location, $sessionStorage, $route){
+signupApp.controller('signupController', function($scope, $http, $location, $sessionStorage, $route, $window){
     // check if user already present
     // //make signup text as string and number only
     // if($scope.user_type.id === 1){
@@ -75,8 +74,8 @@ signupApp.controller('signupController', function($scope, $http, $location, $ses
     // }
 
     $scope.nav_template =  {name: "signup", url: "/public/login-signup/nav-login-signup.html"};
-    $scope.onClickSignup = function() {
 
+    $scope.onClickSignup = function() {
       if(parseInt($scope.user_type.id) === 1 && $scope.signupForm.admin_secret_key.$valid === false) {
         console.log("secret key required for admin");
         return;
