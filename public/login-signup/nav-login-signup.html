@@ -2,9 +2,9 @@
     <div class = "nav">
       <div class = "left-nav-menu">
         <ul>
-          <li><a href = "#!list-books">Books</a></li>
-          <li><a href = "#!login">Login</a></li>
-          <li><a href = "#!signup">Signup</a></li>
+          <li ng-repeat = "menu in menus"><a href = "{{ menu.url }}">{{ menu.name }}</a></li>
+          <!-- <li><a href = "#!login">Login</a></li>
+          <li><a href = "#!signup">Signup</a></li> -->
         </ul>
       </div>
     </div>

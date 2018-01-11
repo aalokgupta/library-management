@@ -4,4 +4,5 @@ angular.module('libraryManagement', ['ngStorage',
     'updateBook',
     'listBooks',
     'signUp',
-    'logIn']);
+    'logIn',
+    'allBooks']);

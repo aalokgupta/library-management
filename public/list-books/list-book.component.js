@@ -5,7 +5,6 @@ var listBookApp = angular.
                     controller: 'listBookController'
                   });
 
-
 listBookApp.factory('performRequest', ['$http', function(http){
   var request = {};
 
@@ -36,47 +35,31 @@ listBookApp.factory('performRequest', ['$http', function(http){
         return err;
     });
   }
-
-
   return request;
 }]);
 //['$sessionStorage', 'performGetRequest',
                                           // function(sessionStorage, performGetRequest) {
 
-listBookApp.factory('updateBookDetail', function($sessionStorage, performRequest){
+listBookApp.factory('updateBookDetail', function($sessionStorage, BookInfo){
 
   var factory  = {};
-  factory.updateBook =  function() {
+  factory.updateBook =  function(book) {
     console.log("inside updateBookDetail");
    if($sessionStorage.token) {
      console.log($sessionStorage.token);
-      // if(sessionStorage.admin)
-      //  console.log(sessionStorage.admin);
-
-       var req = {
-         method: 'POST',
-         url:    '/update/book',
-         data: {
-                 name: 'Data structure in c'
-               },
-         headers: {
-           "access-x-auth": sessionStorage.token,
-           // "admin": sessionStorage.admin
-         }
-       };
-       console.log("req = "+req);
-      return performRequest.postmethod(req).then((book) => {
-         return book;
-       }, (err) => {
-          return err;
-       });
+     BookInfo.setBookName(book.name);
+     BookInfo.setAuthorName(book.author);
+     BookInfo.setNoOfCopy(book.no_of_copy);
+     BookInfo.setNoOfAvailabeCopy(book.no_of_available_copy);
+     BookInfo.setCompanyId(book.company_id);
+     BookInfo.setISBN(book.isbn);
    }
   }
  return factory;
 });
 
-listBookApp.factory('deleteBookDetail', ['$sessionStorage', 'performGetRequest',
-                                    function(sessionStorage, performGetRequest) {
+listBookApp.factory('deleteBookDetail', ['$sessionStorage', 'performRequest',
+                                    function(sessionStorage, performRequest) {
     var factory = {};
 
     factory.deleteBook =  function() {
@@ -165,57 +148,65 @@ console.log("inside get Book Detail");
 
 
 
-listBookApp.controller('listBookController', ['$scope', '$location',
+listBookApp.controller('listBookController', ['$scope',
                                               '$sessionStorage',
-                                              '$http', '$window',
+                                               '$window',
                                                'getAllBooksDetail',
                                                'updateBookDetail',
-                                              function($scope, $location,
-                                                       $sessionStorage, $http,
+                                               'deleteBookDetail',
+                                               'BookInfo',
+                                              function($scope,
+                                                       $sessionStorage,
                                                        $window,
-                                                       getAllBooksDetail, updateBookDetail
+                                                       getAllBooksDetail,
+                                                       updateBookDetail,
+                                                       deleteBookDetail,
+                                                       BookInfo
                                                         ) {
 
     /*
       on-click was not working on list-item so making it available on ng-repeat it is defined here
     */
-    $scope.right_nav_ref = [ {url: '', name: ''},
-                             {url: '', name: "Profile"},
-                             {url: '', name: "Logout"}
-                        ];
+    $scope.right_nav_ref = [{url: '', name: "Logout"}];
 
     if($sessionStorage.token) {
+      $scope.isAdminLoggedin = true;
       // if(true === $sessionStorage.admin && true === $sessionStorage.isUserLoggedIn) {
          getAllBooksDetail.getBookDetail().then((books) => {
             $scope.books = books;
          }, (err) => {
             $scope.books = {};
+            $scope.isAdminLoggedin = false;
             console.log("server is not responding"+err);
          });
       // }
     }
     else {
+      $window.location.href = "#!/all-books";
       console.log("Not authorized user");
       return;
     }
 
     $scope.onClickUpdate = function(book) {
       console.log("update book click on "+JSON.stringify(book));
-      updateBookDetail.updateBook().then((updatedBook) => {
-          $scope.books[book] = updatedBook;
-      }, (err) => {
-          console.log("Book detail can not be updated");
-      });
+      updateBookDetail.updateBook(book);
+      $window.location.href = "#!/update-book";
     }
 
-     $scope.onClickLogOutRef = function(item) {
+     $scope.onClickLogOut = function(item) {
        console.log("onclick logout");
        getAllBooksDetail.logout().then((success) => {
          console.log("user logout successfully");
          $window.location.href = "/#!/login";
        }, (err) => {
-
+          console.log("server is not responding, unable to logout")
        });
+     }
+
+
+     $scope.onClickDelete = function(item) {
+       cosole.log("onclick delete");
+       // deleteBookDetail.deleteBook()
      }
     //
   }]);

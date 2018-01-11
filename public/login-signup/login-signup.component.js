@@ -2,11 +2,54 @@ var loginApp = angular.module('logIn').
         component('logIn', {
           templateUrl: '/public/login-signup/login.html',
           controller: 'loginController'
-        });
+      });
+
+var allBookModule = angular.module('allBooks').
+                      component('allBooks', {
+                          templateUrl: '/public/login-signup/all-books.html',
+                          controller: 'bookController'
+            });
+
+allBookModule.controller('bookController', function($scope, $http){
+  $scope.nav_template =  {name: "login", url: "/public/login-signup/nav-login-signup.html"};
+
+  var menus = [ {url: '#!all-books', name: 'Books'},
+                {url: '#!login', name: 'Login'},
+                {url: '#!signup', name: 'Signup'}
+              ];
+  $scope.menus = menus;
+
+  var req = { method: 'GET',
+              url: '/get-all-books',
+            };
+  $http(req).then((response) => {
+    if(200 === response.status) {
+        $scope.books = response.data;
+    }
+    else {
+      console.log("unable to fetch book details from server");
+    }
+
+  }, (err) => {
+    console.log("Not able to connect to server "+err);
+  });
+});
+
 
 loginApp.controller('loginController', function($scope, $http, $sessionStorage, $location, $window, $route){
   // read username password admin/user and secret key
   $scope.nav_template =  {name: "login", url: "/public/login-signup/nav-login-signup.html"};
+
+  var menus = [ {url: '#!all-books', name: 'Books'},
+                {url: '#!login', name: 'Login'},
+                {url: '#!signup', name: 'Signup'}
+              ];
+  $scope.menus = menus;
+
+  if($sessionStorage.token) {
+    // if(true === $sessionStorage.admin) {
+      $window.location.href = '#!/list-books';
+    }
 
   $scope.onClickLogin = function() {
 
@@ -74,6 +117,14 @@ signupApp.controller('signupController', function($scope, $http, $location, $ses
     // }
 
     $scope.nav_template =  {name: "signup", url: "/public/login-signup/nav-login-signup.html"};
+
+
+    var menus = [ {url: '#!all-books', name: 'Books'},
+                  {url: '#!login', name: 'Login'},
+                  {url: '#!signup', name: 'Signup'}
+                ];
+    $scope.menus = menus;
+
 
     $scope.onClickSignup = function() {
       if(parseInt($scope.user_type.id) === 1 && $scope.signupForm.admin_secret_key.$valid === false) {

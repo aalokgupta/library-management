@@ -130,7 +130,7 @@ app.delete('/logout', authenticateUser, function(req, res){
   });
 });
 
-app.get('/get-all-books', authenticateUser, function(req, res){
+app.get('/get-all-books', function(req, res){
 
       var book1 = {name: "Pratical unix & Internet Security",
                        author: "Simon Garfinkel and gene Spafford",

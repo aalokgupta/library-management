@@ -16,6 +16,7 @@ angular.
             template : '<update-book></update-book>'
           }).
           when('/delete-book', {
+
           }).
           when('/login', {
             template: '<log-In></log-In>'
@@ -26,6 +27,10 @@ angular.
           when('/logout', {
             // user has to be deleted from sessionStorage
             template: '<log-In></log-In>'
+          }).
+          when('/all-books', {
+            // user has to be deleted from sessionStorage
+            template: '<all-Books></all-Books>'
           }).
           otherwise('/login');
         }
