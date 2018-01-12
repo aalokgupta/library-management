@@ -1,5 +1,40 @@
 
-<div ng-controller = "addBookController" ng-model = "nav_admin_menu" ng-include = "nav_admin_menu.url">
+<style>
+.btn-container {
+  width: inherit;
+  position: relative;
+  left: 30%;
+  /*margin: 2% 10%*/
+}
+span {
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 600;
+  font-family: monospace;
+  text-align: center;
+  text-decoration: none;
+  letter-spacing: 0.2em;
+  word-spacing: 1px;
+}
+input, select {
+  font-size: 20px;
+  font-style: normal;
+  font-weight: bold;
+  font-variant: normal;
+  font-stretch: semi-expanded;
+  font-family: sans-serif;
+  padding-left: 5px;
+  color: #00f;
+  border: 2px;
+  border-style: solid;
+  border-color: #00f;
+  border-radius: 3px;
+  margin-right: 2px;
+}
+
+</style>
+
+<div ng-controller = "addBookController" ng-model = "nav_admin_menu" ng-include = "data.nav_admin_menu.url">
 </div>
 
 <div ng-controller = "addBookController">
@@ -18,76 +53,82 @@
 
      <div class = "add-book-body" ng-app = "addBook">
        <div class = "add-book-container" ng-controller = "addBookController">
+         <form name = "bookDetail">
          <table>
            <tr>
            <td class = "left-col">
              <label>Category:</label>
            </td>
-           <td class = "right-col">
-             <select class = "add-book-select-style">
-               <option>A</option>
-               <option>B</option>
-               <option>C</option>
-               <option>D</option>
-               <option>E</option>
-               <option>Other</option>
+           <td class = "center-col">
+             <select class = "add-book-select-style" ng-model = "data.bookCategory" name = "bookcategory" ng-Required = "true">
+               <option ng-repeat = "option in data.categoryOptions"  value = "{{ option.id }}">{{ option.name }}</option>
              </select>
            </td>
+           <td class = "right-col"><span class = "error" ng-show = "bookDetail.bookcategory.$error.required">Required</span></td>
          </tr>
 
            <tr>
              <td class = "left-col">
                <label>Book Name:</label>
              </td>
-             <td class = "right-col">
-               <input type = "text" placeholder="Book name" class = "text-style"></input>
+             <td class = "center-col">
+               <input type = "text" name = "bookname" placeholder="Book name" class = "text-style" ng-model = "bookName" ng-Required = "true"></input>
              </td>
+             <td class = "right-col"><span class = "error" ng-show = "bookDetail.bookname.$error.required">Name Required</span></td>
            </tr>
 
            <tr>
              <td class = "left-col">
                <label>Author:</label>
              </td>
-             <td class = "right-col">
-               <input type = "text" placeholder="Author" class = "text-style"></input>
+             <td class = "center-col">
+               <input type = "text" placeholder="Author" name = "bookauthor" class = "text-style" ng-model = "bookAuthor" ng-required = "true"></input>
              </td>
+             <td class = "right-col"><span class = "error" ng-show = "bookDetail.bookauthor.$error.required">Author Required</span></td>
            </tr>
 
            <tr>
              <td class = "left-col">
                <label>ISBN:</label>
              </td>
-             <td class = "right-col">
-               <input type = "text" placeholder="ISBN" class = "text-style"></input>
+             <td class = "center-col">
+               <input type = "text" name = "bookisbn" placeholder="ISBN" class = "text-style" ng-model = "bookISBN" ng-required = "true"></input>
              </td>
+             <td class = "right-col"><span class = "error" ng-show = "bookDetail.bookisbn.$error.required">ISBN Required</span></td>
+
            </tr>
 
            <tr>
              <td class = "left-col">
                <label>Company ID:</label>
              </td>
-             <td class = "right-col">
-               <input type = "text" placeholder="Company-Id" class = "text-style"></input>
+             <td class = "center-col">
+               <input type = "text" placeholder="Company-Id" class = "text-style" ng-model = "bookCompanyId"></input>
              </td>
+
+
            </tr>
 
            <tr>
              <td class = "left-col">
                <label>No of copy:</label>
              </td>
-             <td class = "right-col">
-               <input type = "text" placeholder = "No of copy" class = "text-style" style = "width: 50%"></input>
+             <td class = "center-col">
+               <input type = "text" name = "bookcopy" placeholder = "No of copy" class = "text-style" ng-model = "bookNoOfCopy" ng-required = "true"></input>
              </td>
+             <td class = "right-col"><span class = "error" ng-show = "bookDetail.bookcopy.$error.required">Required</span></td>
            </tr>
-
-
-           <tr>
+           <!-- <tr>
              <td class = "left-col"></td>
-             <td class = "right-col">
-               <input type = "button" value = "Save Book" class = "btn"></input>
-             </td>
-           </tr>
+             <td class = "right-col"> -->
+
+             <!-- </td>
+           </tr> -->
          </table>
+       </form>
+         <div class = "btn-container">
+           <input type = "button" value = "Save Book" class = "btn" ng-click = "addBook()"></input>
+         </div>
        </div>
        <!-- <div class = "img-container">
          <img src = "/public/img/169367.svg" alt = "book image"/>

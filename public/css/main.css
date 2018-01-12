@@ -90,8 +90,8 @@ body{
 }
 
 .add-book-container {
-  margin: 1%;
-  width: 70%;
+  margin: 1% 4%;
+  /*width: 70%;*/
   display: inline-block;
 }
 
@@ -113,12 +113,16 @@ table tr {
   height: 2em;
 }*/
 .left-col {
-  width: 30%;
+  width: 25%;
   margin: 5px 2%;
 }
-.rigth-col {
-  width: 70%;
+.center-col {
+  width: 45%;
   margin: 5px 2%;
+}
+.right-col {
+  width: 20%;
+  margin: auto 5px;
 }
 .text-style {
   width: 100%;

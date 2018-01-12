@@ -8,6 +8,7 @@ var updateBookApp = angular.
 
  updateBookApp.factory('updateBook', function($sessionStorage, request){
    var factory = {};
+
    factory.update = function(book, id) {
      var req = {
                 method: 'post',
@@ -17,7 +18,8 @@ var updateBookApp = angular.
                   "admin": $sessionStorage.admin
                 }
      }
-     request.getmethod(req).then((book) => {
+
+    return request.getmethod(req).then((book) => {
           return book;
      }, (err) => {
        return err;
@@ -31,7 +33,7 @@ updateBookApp.controller('updateBookController', function($scope, $sessionStorag
                                                           BookInfo, updateBook) {
   console.log("inside updateBookController");
   if($sessionStorage.token) {
-    // if($sessionStorage.admin) {
+  // if($sessionStorage.admin) {
     // }
     $scope.nav_admin_menu =  {name: "admin", url: "/public/add-book/admin-nav-menu.html"};
     console.log("book-name "+BookInfo.getAuthorName());
@@ -41,7 +43,6 @@ updateBookApp.controller('updateBookController', function($scope, $sessionStorag
     $scope.bookISBN = BookInfo.getISBN();
     $scope.bookNoOfCopy = BookInfo.getNoOfCopy();
     $scope.bookCopmanyId = BookInfo.getCompanyId();
-
 
     $scope.onClickUpdateBook = function() {
       console.log("on-click updateBook");
@@ -53,7 +54,6 @@ updateBookApp.controller('updateBookController', function($scope, $sessionStorag
             console.log("book detail can not be updtaed");
         });
     }
-
   }
   else {
     $window.location.href = "#!/login";
