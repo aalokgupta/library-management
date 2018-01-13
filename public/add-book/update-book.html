@@ -13,6 +13,14 @@
     border-color: #00f;
     border-radius: 3px;
     }
+    input {
+      min-width: 500px;
+    }
+    .btn-container {
+      position: relative;
+      left: 30%;
+      top: 2%;
+    }
 </style>
 
 <div ng-controller = "updateBookController" ng-model = "nav_admin_menu" ng-include = "nav_admin_menu.url">
@@ -44,7 +52,7 @@
              <option>Other</option>
            </select>
          </td>
-         <td class = "right-col">
+         <td class = "center-col">
            <input type ="text" placeholder="search by book name" class = "text-style" ng-model = "searchBook"></input>
          </td>
        </tr>
@@ -53,7 +61,7 @@
            <td class = "left-col">
              <label>Book Name:</label>
            </td>
-           <td class = "right-col">
+           <td class = "center-col">
              <input type = "text" placeholder="Book name" ng-model = "bookName" class = "text-style"></input>
            </td>
          </tr>
@@ -62,7 +70,7 @@
            <td class = "left-col">
              <label>Author:</label>
            </td>
-           <td class = "right-col">
+           <td class = "center-coll">
              <input type = "text" placeholder="Author" class = "text-style" ng-model = "bookAuthor"></input>
            </td>
          </tr>
@@ -71,7 +79,7 @@
            <td class = "left-col">
              <label>ISBN:</label>
            </td>
-           <td class = "right-col">
+           <td class = "center-col">
              <input type = "text" placeholder="ISBN" class = "text-style" ng-model = "bookISBN"></input>
            </td>
          </tr>
@@ -80,7 +88,7 @@
            <td class = "left-col">
              <label>Company ID:</label>
            </td>
-           <td class = "right-col">
+           <td class = "center-col">
              <input type = "text" placeholder="Company-Id" class = "text-style" ng-model = "bookCopmanyId"></input>
            </td>
          </tr>
@@ -89,7 +97,7 @@
            <td class = "left-col">
              <label>No of copy:</label>
            </td>
-           <td class = "right-col">
+           <td class = "center-col">
              <input type = "text" placeholder = "No of copy" class = "text-style" style = "width: 50%" ng-model = "bookNoOfCopy"></input>
            </td>
          </tr>
@@ -101,7 +109,10 @@
          </tr>
             -->
        </table>
-       <input type = "button" value = "Update Book" class = "btn" ng-click = "onClickUpdateBook()"></input>
+       <div class = "btn-container">
+         <input type = "button" value = "Update Book" class = "btn" ng-click = "onClickUpdateBook()"></input>
+       </div>
+
      </div>
      <!-- <div class = "img-container">
        <img src = "/public/img/169367.svg" alt = "book image"/>

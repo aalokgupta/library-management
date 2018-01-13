@@ -31,5 +31,21 @@ libraryApp.factory('request', ['$http', function(http){
         return err;
     });
   }
+
+
+  request.deletemethod =  function(req) {
+    return http(req).then((response) => {
+      if(200 === response.status) {
+        console.log("books successfully deleted ");
+        return response.data;
+      }
+      else {
+        return response.status;
+      }
+    }, (err) => {
+      return err;
+    });
+  }
+
   return request;
 }]);

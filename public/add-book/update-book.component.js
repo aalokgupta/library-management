@@ -29,9 +29,10 @@ var updateBookApp = angular.
  });
 
 
-updateBookApp.controller('updateBookController', function($scope, $sessionStorage,
+updateBookApp.controller('updateBookController', function($scope, $sessionStorage, $window,
                                                           BookInfo, updateBook) {
   console.log("inside updateBookController");
+  console.log($sessionStorage.token);
   if($sessionStorage.token) {
   // if($sessionStorage.admin) {
     // }
@@ -52,11 +53,10 @@ updateBookApp.controller('updateBookController', function($scope, $sessionStorag
             console.log("book detail has been updaed");
         }, (err) => {
             console.log("book detail can not be updtaed");
-        });
+      });
     }
   }
   else {
     $window.location.href = "#!/login";
   }
-
 });

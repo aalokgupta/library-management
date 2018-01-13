@@ -4,39 +4,39 @@ var listBookApp = angular.
                     templateUrl: '/public/list-books/list-book.html',
                     controller: 'listBookController'
                   });
-
-listBookApp.factory('performRequest', ['$http', function(http){
-  var request = {};
-
-  request.get = function(req) {
-    // console.log(JSON.stringify(req, undefined, 2));
-     return http(req).then((response) => {
-      if(200 === response.status) {
-            return response.data;
-      }
-      else {
-        console.log("Books details can be not fetched from server ");
-      }
-    }, (error) => {
-        console.log("Books details can be fetched from server "+error);
-    });
-  }
-
-  request.postmethod = function(req) {
-     return http(req).then((response) => {
-      if(200 === response.status) {
-            console.log("response = "+JSON.stringify(response, undefined, 2));
-            return response.data;
-      }
-      else {
-        return response.status;
-      }
-    }, (error) => {
-        return err;
-    });
-  }
-  return request;
-}]);
+//
+// listBookApp.factory('performRequest', ['$http', function(http){
+//   var request = {};
+//
+//   request.get = function(req) {
+//     // console.log(JSON.stringify(req, undefined, 2));
+//      return http(req).then((response) => {
+//       if(200 === response.status) {
+//             return response.data;
+//       }
+//       else {
+//         console.log("Books details can be not fetched from server ");
+//       }
+//     }, (error) => {
+//         console.log("Books details can be fetched from server "+error);
+//     });
+//   }
+//
+//   request.postmethod = function(req) {
+//      return http(req).then((response) => {
+//       if(200 === response.status) {
+//             console.log("response = "+JSON.stringify(response, undefined, 2));
+//             return response.data;
+//       }
+//       else {
+//         return response.status;
+//       }
+//     }, (error) => {
+//         return err;
+//     });
+//   }
+//   return request;
+// }]);
 //['$sessionStorage', 'performGetRequest',
                                           // function(sessionStorage, performGetRequest) {
 
@@ -58,22 +58,37 @@ listBookApp.factory('updateBookDetail', function($sessionStorage, BookInfo){
  return factory;
 });
 
-listBookApp.factory('deleteBookDetail', ['$sessionStorage', 'performRequest',
-                                    function(sessionStorage, performRequest) {
+listBookApp.factory('deleteBookDetail',
+                                    function($sessionStorage, request) {
     var factory = {};
 
-    factory.deleteBook =  function() {
-      if(sessionStorage.token) {
-        console.log(sessionStorage.token);
-        if(sessionStorage.admin)
-          console.log(sessionStorage.admin);
-      }
+    factory.deleteBook =  function(id) {
+      if($sessionStorage.token) {
+        console.log($sessionStorage.token);
+        if($sessionStorage.admin) {
+          console.log($sessionStorage.admin);
+
+          var req = {
+                      method: 'DELETE',
+                      url: `/delete/books/${id}`,
+                      headers: {
+                        "access-x-auth": $sessionStorage.token,
+                        "admin": $sessionStorage.admin
+                      }
+                    };
+          return request.deletemethod(req).then((response) => {
+              return response;
+          }, (err) => {
+            return err;
+          });
+          }
+        }
     }
     return factory;
-}]);
+});
 
-listBookApp.factory('getAllBooksDetail', ['$sessionStorage' , 'performRequest' ,'$window',
-                                          function(sessionStorage, performRequest, window){
+listBookApp.factory('getAllBooksDetail', ['$sessionStorage' , 'request' ,'$window',
+                                          function(sessionStorage, request, window){
 console.log("inside get Book Detail");
 
   var factory = {};
@@ -88,7 +103,7 @@ console.log("inside get Book Detail");
               }
             };
     // console.log("getBookDetail", JSON.stringify(req, undefined, 2));
-    return performRequest.get(req).then((books) => {
+    return request.getmethod(req).then((books) => {
         return books;
     }, (err) => {
 
@@ -107,7 +122,7 @@ console.log("inside get Book Detail");
        }
    };
 
-   return performRequest.get(req).then((success) => {
+   return request.getmethod(req).then((success) => {
      sessionStorage.token = "";
      sessionStorage.admin = "";
      console.log("token deleted");
@@ -145,8 +160,6 @@ console.log("inside get Book Detail");
 //   console.log("user logOut successfully");
 //   }
 // }]);
-
-
 
 listBookApp.controller('listBookController', ['$scope',
                                               '$sessionStorage',
@@ -203,10 +216,9 @@ listBookApp.controller('listBookController', ['$scope',
        });
      }
 
-
-     $scope.onClickDelete = function(item) {
-       cosole.log("onclick delete");
-       // deleteBookDetail.deleteBook()
+     $scope.onClickDelete = function(book) {
+       console.log("onclick delete "+JSON.stringify(book));
+       deleteBookDetail.deleteBook(book.id);
      }
     //
   }]);

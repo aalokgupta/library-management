@@ -10,13 +10,16 @@ addBookApp.factory('AddBook', function($sessionStorage, request){
   var factory = {};
 
   factory.add = function(book){
+    // console.log("book");
     var req = {
                 method: 'POST',
                 url: '/add-book',
+                data: book,
                 headers: {
                   "access-x-auth": $sessionStorage.token,
                   "admin": $sessionStorage.admin
                 }
+
               }
     return request.postmethod(req).then((response) => {
         if(200 === response.status) {
@@ -56,7 +59,7 @@ addBookApp.controller('addBookController', function($scope, $sessionStorage, Add
                   author: $scope.bookAuthor,
                   no_of_copy: $scope.bookNoOfCopy,
                   isbn: $scope.bookISBN,
-                  company_id: $scope.bookCopmanyId,
+                  companyid: $scope.bookCopmanyId,
                   category: $scope.bookCategory
       };
 
