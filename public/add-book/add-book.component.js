@@ -33,7 +33,7 @@ addBookApp.factory('AddBook', function($sessionStorage, request){
   return factory;
 });
 
-addBookApp.controller('addBookController', function($scope, $sessionStorage, AddBook) {
+addBookApp.controller('addBookController', function($scope, $window, $sessionStorage, AddBook) {
           // console.log($location.url());
   if($sessionStorage.token) {
     // if($sessionStorage.admin) {
@@ -65,6 +65,7 @@ addBookApp.controller('addBookController', function($scope, $sessionStorage, Add
 
       AddBook.add(book).then((response) => {
           console.log("Book has been added successfully");
+          $window.location.href = "#!/list-book";
       }, (err) => {
         console.log("server not responsding while adding book");
       });

@@ -9,22 +9,26 @@ var updateBookApp = angular.
  updateBookApp.factory('updateBook', function($sessionStorage, request){
    var factory = {};
 
-   factory.update = function(book, id) {
+   factory.update = function(book) {
      var req = {
                 method: 'post',
-                url: `/update-book/${id}`,
+                url: '/update-book',
                 headers: {
                   "access-x-auth": $sessionStorage.token,
                   "admin": $sessionStorage.admin
+                },
+                data: {
+                  book: book
                 }
-     }
+              }
 
-    return request.getmethod(req).then((book) => {
+    return request.postmethod(req).then((book) => {
           return book;
      }, (err) => {
        return err;
      });
    }
+
    return factory;
  });
 
@@ -38,6 +42,9 @@ updateBookApp.controller('updateBookController', function($scope, $sessionStorag
     // }
     $scope.nav_admin_menu =  {name: "admin", url: "/public/add-book/admin-nav-menu.html"};
     console.log("book-name "+BookInfo.getAuthorName());
+
+    var book = {};
+
     $scope.searchBook = BookInfo.getBookName();
     $scope.bookName = BookInfo.getBookName();
     $scope.bookAuthor = BookInfo.getAuthorName();
@@ -46,14 +53,21 @@ updateBookApp.controller('updateBookController', function($scope, $sessionStorag
     $scope.bookCopmanyId = BookInfo.getCompanyId();
 
     $scope.onClickUpdateBook = function() {
-      console.log("on-click updateBook");
-        var id = 1; //BookInfo.getBookId();
-        var book = {name: "abcd"};
-        updateBook.update(book, id).then((success) => {
-            console.log("book detail has been updaed");
+        var book = {
+                    book_id: BookInfo.getBookId(),
+                    name: $scope.bookName,
+                    author: $scope.bookAuthor,
+                    isbn: $scope.bookISBN,
+                    no_of_copy: $scope.bookNoOfCopy,
+                    companyid: $scope.bookCopmanyId
+                    };
+
+         updateBook.update(book).then((updatedBook) => {
+            console.log("book detail has been updated = "+updatedBook);
+            $window.location.href = "#!/list-book";
         }, (err) => {
-            console.log("book detail can not be updtaed");
-      });
+            return new Error("book detail can not be updated");
+        });
     }
   }
   else {

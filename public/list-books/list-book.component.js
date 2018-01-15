@@ -4,41 +4,6 @@ var listBookApp = angular.
                     templateUrl: '/public/list-books/list-book.html',
                     controller: 'listBookController'
                   });
-//
-// listBookApp.factory('performRequest', ['$http', function(http){
-//   var request = {};
-//
-//   request.get = function(req) {
-//     // console.log(JSON.stringify(req, undefined, 2));
-//      return http(req).then((response) => {
-//       if(200 === response.status) {
-//             return response.data;
-//       }
-//       else {
-//         console.log("Books details can be not fetched from server ");
-//       }
-//     }, (error) => {
-//         console.log("Books details can be fetched from server "+error);
-//     });
-//   }
-//
-//   request.postmethod = function(req) {
-//      return http(req).then((response) => {
-//       if(200 === response.status) {
-//             console.log("response = "+JSON.stringify(response, undefined, 2));
-//             return response.data;
-//       }
-//       else {
-//         return response.status;
-//       }
-//     }, (error) => {
-//         return err;
-//     });
-//   }
-//   return request;
-// }]);
-//['$sessionStorage', 'performGetRequest',
-                                          // function(sessionStorage, performGetRequest) {
 
 listBookApp.factory('updateBookDetail', function($sessionStorage, BookInfo){
 
@@ -53,6 +18,8 @@ listBookApp.factory('updateBookDetail', function($sessionStorage, BookInfo){
      BookInfo.setNoOfAvailabeCopy(book.no_of_available_copy);
      BookInfo.setCompanyId(book.company_id);
      BookInfo.setISBN(book.isbn);
+     BookInfo.setBookId(book._id);
+
    }
   }
  return factory;
@@ -69,14 +36,18 @@ listBookApp.factory('deleteBookDetail',
           console.log($sessionStorage.admin);
 
           var req = {
-                      method: 'DELETE',
-                      url: `/delete/books/${id}`,
+                      method: 'POST',
+                      url: `/delete-book`,
                       headers: {
                         "access-x-auth": $sessionStorage.token,
                         "admin": $sessionStorage.admin
-                      }
-                    };
-          return request.deletemethod(req).then((response) => {
+                      },
+                      data: {
+                        book_id: id
+                    }
+                  };
+                  console.log("delete req = "+JSON.stringify(req));
+          return request.postmethod(req).then((response) => {
               return response;
           }, (err) => {
             return err;
@@ -138,28 +109,6 @@ console.log("inside get Book Detail");
   return factory;
 }]);
 
-//
-// listBookApp.factory('performLogout', ['$sessionStorage' , '$window', 'performGetRequest',
-//                                       function(sessionStorage, win, performGetRequest) {
-// var factory = {}
-//  factory.logout =  function() {
-//   console.log("logout clicked");
-//   var req = {
-//     method: 'DELETE',
-//     url: `/logout`,
-//     headers: {
-//       "access-x-auth": $sessionStorage.token
-//       // "admin": $sessionStorage.admin
-//       }
-//   }
-//   performGetRequest(req);
-//   sessionStorage.token = "";
-//   sessionStorage.admin = "";
-//   console.log("token deleted");
-//   win.location.href = "/#!/login";
-//   console.log("user logOut successfully");
-//   }
-// }]);
 
 listBookApp.controller('listBookController', ['$scope',
                                               '$sessionStorage',
@@ -218,7 +167,14 @@ listBookApp.controller('listBookController', ['$scope',
 
      $scope.onClickDelete = function(book) {
        console.log("onclick delete "+JSON.stringify(book));
-       deleteBookDetail.deleteBook(book.id);
+       deleteBookDetail.deleteBook(book._id).then( (response) => {
+         var index = $scope.books.indexOf(book);
+         $scope.books.splice(index, 1);
+         // $scope.books = books;
+         console.log("book detail has benn deleted from book database "+response);
+       }, (err) => {
+          console.log(err);
+       });
      }
     //
   }]);
