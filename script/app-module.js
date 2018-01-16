@@ -5,4 +5,7 @@ angular.module('libraryManagement', ['ngStorage',
     'listBooks',
     'signUp',
     'logIn',
-    'allBooks']);
+    'allBooks',
+    'viewBooks',
+    'issuedBooks',
+    'requestedBooks']);

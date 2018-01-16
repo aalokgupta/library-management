@@ -45,6 +45,7 @@ var routesHandler = function(app) {
 
         res.header('access-x-auth', token);
         res.header('admin', body.admin);
+        res.header('user_id', user._id);
         console.log("user save into db and generated token is "+token);
         res.status(200).send(); // need to redirect to admin dashboard
       });
@@ -86,6 +87,7 @@ var routesHandler = function(app) {
           console.log("token generated");
           res.header('access-x-auth', token);
           res.header('admin', body.admin);
+          res.header('user_id', user._id);
           res.status(200).send();
         });
       }).catch(() => {
@@ -153,6 +155,18 @@ var routesHandler = function(app) {
        }
        res.status(200).send({book: book});
      });
+   });
+
+
+   app.post('/request-book', authenticateUser, function(req, res){
+     console.log("url = "+JSON.stringify(req.body));
+     res.status(200).send({request_accept: true});
+     // Bookrequest.createRequest(req.body, function(err, book){
+     //   if(err) {
+     //     res.status(400).send({error: err});
+     //   }
+     //   res.status(200).send({book: book});
+     // });
    });
 };
 

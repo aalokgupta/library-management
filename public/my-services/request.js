@@ -19,10 +19,9 @@ libraryApp.factory('request', ['$http', function(http){
   }
 
   request.postmethod = function(req) {
-     return http(req).then((response) => {
+     return http(req).then((response, header) => {
       if(200 === response.status) {
-            console.log("response = "+JSON.stringify(response, undefined, 2));
-            return response.data;
+            return response;
       }
       else {
         return response.status;

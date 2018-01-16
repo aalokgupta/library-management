@@ -35,24 +35,44 @@ allBookModule.controller('bookController', function($scope, $http){
   });
 });
 
+loginApp.factory('login', function($sessionStorage, request){
+  var factory = {};
+  factory.login =  function(userInfo) {
+    var req = {
+      method: 'POST',
+      url: '/login',
+      data: userInfo
+    };
 
-loginApp.controller('loginController', function($scope, $http, $sessionStorage, $location, $window, $route){
+    return request.postmethod(req).then((response) => {
+      console.log("login response = "+response);
+      return response;
+    }, (err) => {
+        return err;
+    });
+  }
+  return factory;
+});
+
+loginApp.controller('loginController', function($scope, $sessionStorage, $window, login){
   // read username password admin/user and secret key
-  $scope.nav_template =  {name: "login", url: "/public/login-signup/nav-login-signup.html"};
+  var menus =
 
-  var menus = [ {url: '#!all-books', name: 'Books'},
-                {url: '#!login', name: 'Login'},
-                {url: '#!signup', name: 'Signup'}
-              ];
-  $scope.menus = menus;
+  $scope.data = {
+    menus: [ {url: '#!all-books', name: 'Books'},
+                  {url: '#!login', name: 'Login'},
+                  {url: '#!signup', name: 'Signup'}
+                ],
+    nav_template:  {name: "login", url: "/public/login-signup/nav-login-signup.html"}
+  };
 
   if($sessionStorage.token) {
-    // if(true === $sessionStorage.admin) {
-      $window.location.href = '#!/list-books';
+     if(true === $sessionStorage.admin) {
+       $window.location.href = '#!/list-books';
     }
+  }
 
   $scope.onClickLogin = function() {
-
     if(parseInt($scope.user_type.id) === 1 && $scope.logInForm.admin_secret_key.$valid === false) {
       console.log("secret key required for admin");
       return;
@@ -64,32 +84,25 @@ loginApp.controller('loginController', function($scope, $http, $sessionStorage, 
                     password: $scope.password,
                     admin: admin
                    };
-        if(true === admin) {
-          body["admin_secret_key"] = $scope.admin_secret_key;
-        }
-        console.log("body = "+JSON.stringify(body, undefined, 2));
-        admin_secret_key:
-        var req = {
-          method: 'POST',
-          url: '/login',
-          data: body
-        };
 
-        $http(req).then(function onSuccess(response){
-          if(response.status === 200){
-            $sessionStorage.token = response.headers("access-x-auth");
-            $sessionStorage.admin = response.headers("admin");
-            $sessionStorage.isUserLoggedIn = true;
-            console.log("token = "+$sessionStorage.token+"  "+$sessionStorage.admin);
-            $window.location.href =  '/#!/list-books';
-            // change the url to home after providing message
+        if(true === admin) {
+           body["admin_secret_key"] = $scope.admin_secret_key;
+         }
+        login.login(body).then((response) => {
+          $sessionStorage.token = response.headers("access-x-auth");
+          $sessionStorage.admin = response.headers("admin");
+          $sessionStorage.user_id = response.headers("user_id");
+
+          if("false" === $sessionStorage.admin) {
+            console.log("inside view book");
+              $window.location.href =  '/#!/view-books';
           }
-          else if(response.status === 400) {
+          else if("true" === $sessionStorage.admin) {
+              $window.location.href =  '/#!/list-books';
+          }
+
+        }, (err) => {
             console.log("There are some problem in login, contact admin");
-          }
-        }, function onError(response) {
-            console.log("some error occured "+JSON.stringify(response.data));
-            // display msg on failure below the signup-form
         });
       }
       else {
@@ -102,29 +115,41 @@ loginApp.controller('loginController', function($scope, $http, $sessionStorage, 
   }
 });
 
-
 var signupApp = angular.module('signUp').
         component('signUp', {
           templateUrl: '/public/login-signup/signup.html',
           controller: 'signupController'
         });
 
-signupApp.controller('signupController', function($scope, $http, $location, $sessionStorage, $route, $window){
-    // check if user already present
-    // //make signup text as string and number only
-    // if($scope.user_type.id === 1){
-    //   $scope.signupForm.admin_secret_key.visible
-    // }
+signupApp.factory('signup', function($sessionStorage, request) {
 
-    $scope.nav_template =  {name: "signup", url: "/public/login-signup/nav-login-signup.html"};
+  var factory = {};
+  factory.signup = function(userInfo) {
+    var req = {
+      method: 'POST',
+      url: '/signup',
+      data: userInfo
+    };
+   return request.postmethod(req).then((response) => {
+        $sessionStorgae.token = response.headers("token");
+        $sessionStorgae.admin = response.headers("admin");
+        $sessionStorage.user_id = response.headers("user_id");
+    }, (err) => {
+        return err;
+    });
+   }
+  return factory;
+});
 
+signupApp.controller('signupController', function($scope, $sessionStorage, $window, signup) {
 
-    var menus = [ {url: '#!all-books', name: 'Books'},
-                  {url: '#!login', name: 'Login'},
-                  {url: '#!signup', name: 'Signup'}
-                ];
-    $scope.menus = menus;
-
+    $scope.data = {
+      nav_template: {name: "signup", url: "/public/login-signup/nav-login-signup.html"},
+      menus: [{url: '#!all-books', name: 'Books'},
+                    {url: '#!login', name: 'Login'},
+                    {url: '#!signup', name: 'Signup'}
+                  ]
+    };
 
     $scope.onClickSignup = function() {
       if(parseInt($scope.user_type.id) === 1 && $scope.signupForm.admin_secret_key.$valid === false) {
@@ -139,33 +164,28 @@ signupApp.controller('signupController', function($scope, $http, $location, $ses
               if($scope.repassword === $scope.password) {
                 console.log("valid form data");
 
-                var req = {
-                  method: 'POST',
-                  url: '/signup',
-                  data: {username: $scope.username,
+                var userInfo = {
+                         username: $scope.username,
                          email: $scope.email,
                          password: $scope.password,
                          admin: admin,
                          admin_secret_key: $scope.admin_secret_key
-                        }
                 };
-                $http(req).then(function onSuccess(response){
-                  if(response.status === 200){
-                    // console.log("after signup string return from server is "+response.headers("x-auth"));
-                    $sessionStorage.token = response.headers("access-x-auth");
-                    $sessionStorage.admin = response.headers("admin");
-                    $sessionStorage.isUserLoggedIn = true;
-                    console.log("token = "+$sessionStorage.token+"  "+$sessionStorage.admin);
-                    // $location.path('https://127.0.0.1:8080');
-                    $window.location.href =  '/#!/list-books'
-                    // change the url to home after providing message
-                  }
-                  else if(response.status === 400) {
-                    console.log("There are some problem in sing-up contact admin");
-                  }
-                }, function onError(response) {
-                    console.log("some error occured "+response.data)
-                    // display msg on failure below the signup-form
+
+                signup.signup(userInfo).then((response) => {
+                    if($sessionStorage.token) {
+                      if(true === $sessionStorgae.admin) {
+                        $window.location.href =  '/#!/list-books'
+                      }
+                      else if(false === $sessionStorgae.admin) {
+                        $window.location.href =  '/#!/view-books'
+                      }
+                      else {
+                        // $window.location.href =  '/#!/view-books'
+                      }
+                    }
+                }, (err) => {
+                    console.log("not able to signup");
                 });
               }
               else {
@@ -183,3 +203,30 @@ signupApp.controller('signupController', function($scope, $http, $location, $ses
       }
     }
 });
+
+
+
+
+        // admin_secret_key:
+        // var req = {
+        //   method: 'POST',
+        //   url: '/login',
+        //   data: body
+        // };
+
+        // $http(req).then(function onSuccess(response){
+        //   if(response.status === 200){
+        //     $sessionStorage.token = response.headers("access-x-auth");
+        //     $sessionStorage.admin = response.headers("admin");
+        //     $sessionStorage.isUserLoggedIn = true;
+        //     console.log("token = "+$sessionStorage.token+"  "+$sessionStorage.admin);
+        //     $window.location.href =  '/#!/list-books';
+        //     // change the url to home after providing message
+        //   }
+        //   else if(response.status === 400) {
+        //     console.log("There are some problem in login, contact admin");
+        //   }
+        // }, function onError(response) {
+        //     console.log("some error occured "+JSON.stringify(response.data));
+        //     // display msg on failure below the signup-form
+        // });

@@ -32,6 +32,15 @@ angular.
             // user has to be deleted from sessionStorage
             template: '<all-Books></all-Books>'
           }).
+          when('/view-books', {
+            template: '<view-Books></view-Books>'
+          }).
+          when('/issued-books', {
+            template: '<issued-Books></issued-Books>'
+          }).
+          when('/requested-books', {
+            template: '<requested-Books></requested-Books>'
+          }).
           otherwise('/login');
         }
   ]);
