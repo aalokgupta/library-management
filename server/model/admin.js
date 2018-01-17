@@ -130,7 +130,6 @@ adminSchema.methods.removetoken = function(token){
 }
 
 var Admin = mongoose.model('Admin', adminSchema);
-
 module.exports = {
   Admin: Admin
 };

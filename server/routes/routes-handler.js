@@ -1,6 +1,7 @@
 
 const {Admin} = require('../model/admin');
 const {Book} = require('../model/book');
+const {BookRequest} = require('../model/book-request');
 const {authenticateUser} = require('../authenticate/authenticateUser');
 
 const filepath = require('filepath');
@@ -160,13 +161,15 @@ var routesHandler = function(app) {
 
    app.post('/request-book', authenticateUser, function(req, res){
      console.log("url = "+JSON.stringify(req.body));
-     res.status(200).send({request_accept: true});
-     // Bookrequest.createRequest(req.body, function(err, book){
-     //   if(err) {
-     //     res.status(400).send({error: err});
-     //   }
-     //   res.status(200).send({book: book});
-     // });
+     var body = _.pick(req.body, ['user_id', 'book_id']);
+     var new_request = new BookRequest(body);
+     new_request.createBookRequest(function(err, response){
+       if(err) {
+         res.status(400).send({error: err});
+       }
+       console.log(response);
+       res.status(200).send({success: "request has been sent to admin"});
+     });
    });
 };
 
