@@ -98,7 +98,8 @@ loginApp.controller('loginController', function($scope, $sessionStorage, $window
               $window.location.href =  '/#!/view-books';
           }
           else if("true" === $sessionStorage.admin) {
-              $window.location.href =  '/#!/list-books';
+              // $window.location.href =  '/#!/list-books';
+              $window.location.href =  '/#!/user-page';
           }
 
         }, (err) => {

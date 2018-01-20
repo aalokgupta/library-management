@@ -1,8 +1,9 @@
+
 var listBookApp = angular.
                   module('listBooks').
                   component('listBooks', {
                     templateUrl: '/public/list-books/list-book.html',
-                    controller: 'listBookController'
+                    controller:  'listBookController'
                   });
 
 listBookApp.factory('updateBookDetail', function($sessionStorage, BookInfo){
@@ -19,7 +20,6 @@ listBookApp.factory('updateBookDetail', function($sessionStorage, BookInfo){
      BookInfo.setCompanyId(book.company_id);
      BookInfo.setISBN(book.isbn);
      BookInfo.setBookId(book._id);
-
    }
   }
  return factory;
@@ -117,31 +117,42 @@ listBookApp.controller('listBookController', ['$scope',
                                                'updateBookDetail',
                                                'deleteBookDetail',
                                                'BookInfo',
+                                               '$parse',
                                               function($scope,
                                                        $sessionStorage,
                                                        $window,
                                                        getAllBooksDetail,
                                                        updateBookDetail,
                                                        deleteBookDetail,
-                                                       BookInfo
+                                                       BookInfo,
+                                                       $parse
                                                         ) {
+
 
     /*
       on-click was not working on list-item so making it available on ng-repeat it is defined here
     */
-    $scope.right_nav_ref = [{url: '', name: "Logout"}];
+    // $scope.right_nav_ref = [{url: '', name: "Logout"}];
 
+    // for(var i = 0; i < books.length; i++) {
+    //   var str = books[i].name;
+    //   var model = $parse(str);
+    //   model.assign($scope, false);
+    //   // console.log($scope.name);
+    //   // $scope[books.name] = false;
+    // }
     if($sessionStorage.token) {
       $scope.isAdminLoggedin = true;
-      // if(true === $sessionStorage.admin && true === $sessionStorage.isUserLoggedIn) {
+      if("true" === $sessionStorage.admin) {
          getAllBooksDetail.getBookDetail().then((books) => {
             $scope.books = books;
+
          }, (err) => {
             $scope.books = {};
             $scope.isAdminLoggedin = false;
             console.log("server is not responding"+err);
          });
-      // }
+       }
     }
     else {
       $window.location.href = "#!/all-books";
@@ -152,18 +163,19 @@ listBookApp.controller('listBookController', ['$scope',
     $scope.onClickUpdate = function(book) {
       console.log("update book click on "+JSON.stringify(book));
       updateBookDetail.updateBook(book);
+      $scope.myValue = true;
       $window.location.href = "#!/update-book";
     }
 
-     $scope.onClickLogOut = function(item) {
-       console.log("onclick logout");
-       getAllBooksDetail.logout().then((success) => {
-         console.log("user logout successfully");
-         $window.location.href = "/#!/login";
-       }, (err) => {
-          console.log("server is not responding, unable to logout")
-       });
-     }
+     // $scope.onClickLogOut = function(item) {
+     //   console.log("onclick logout");
+     //   getAllBooksDetail.logout().then((success) => {
+     //     console.log("user logout successfully");
+     //     $window.location.href = "/#!/login";
+     //   }, (err) => {
+     //      console.log("server is not responding, unable to logout")
+     //   });
+     // }
 
      $scope.onClickDelete = function(book) {
        console.log("onclick delete "+JSON.stringify(book));

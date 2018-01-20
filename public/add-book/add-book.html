@@ -34,22 +34,20 @@ input, select {
 
 </style>
 
-<div ng-controller = "addBookController" ng-model = "nav_admin_menu" ng-include = "data.nav_admin_menu.url">
-</div>
 
 <div ng-controller = "addBookController">
 
   <div class = "book-body">
-    <div class = "body-left-nav">
+    <!-- <div class = "body-left-nav">
      <div class = "body-left-nav-container">
        <ul>
-         <li><a href = "#!list-books">All Books</a></li>
-         <li><a href = "#!add-book">Add Book</a></li>
-         <li><a href = "#!update-book">Update Book</a></li>
-         <li><a href = "#!remove-book">Remove Book</a></li>
+         <li><a href = "#!user-page" ng-click = "onClickAllBook()">All Books</a></li>
+         <li><a href = "#!add-book" ng-click = "onClickAddBook()">Add Book</a></li>
+         <li><a href = "#!update-book" ng-click = "onClickUpdateBook()">Update Book</a></li>
+         <li><a href = "#!remove-book" ng-click = "onClickRemoveBook()">Remove Book</a></li>
        </ul>
      </div>
-   </div>
+   </div> -->
 
      <div class = "add-book-body" ng-app = "addBook">
        <div class = "add-book-container" ng-controller = "addBookController">

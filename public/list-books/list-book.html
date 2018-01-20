@@ -1,26 +1,64 @@
+<style>
+  .left-nav-menu ul {
+    margin:0;
+    background-color: #777;
+    /*position: fixed;*/
+  }
+  .left-nav-menu li {
+    font-family: 'Oswald', sans-serif;
+    width: 10%;
+    font-size: 1.5em;
+    height: 70px;
+    line-height: 70px;
+    display: inline-block;
+    /*color: #000;*/
+    /*border-bottom: 1px solid #888;*/
+
+}
+
+/* The Modal (background) */
+.modal {
+    display: none; /* Hidden by default */
+    position: relative;; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    padding-top: 100px; /* Location of the box */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content */
+.modal-content {
+    background-color: #fefefe;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+}
+
+/* The Close Button */
+.close {
+    color: #aaaaaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
+</style>
+
+
+
 <div ng-controller = "listBookController">
-  <div>
-    <div class = "nav-container">
-      <div class = "nav">
-        <div class = "left-nav-menu">
-          <ul>
-            <li><a href = "#!list-books">Home</a></li>
-            <li><a href = "#!add-book">Books</a></li>
-            <li><a href = "#!pending-request">Pending Request</a></li>
-            <li><a href = "#!issued-books">Issued Book</a></li>
-            <li><a href = "#">Users</a></li>
-          </ul>
-        </div><div
-        class = "right-nav-menu">
-          <ul>
-            <li></li>
-            <li><a href = "#!/list-books">Profile</a></li>
-            <li ng-repeat = "ref in right_nav_ref"><a href = "{{ ref.url }}" ng-click = onClickLogOut(ref)>{{ref.name}}</a></li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </div>
 
   <div class = "main-body">
     <div class = "container">
@@ -45,6 +83,7 @@
                 <label> No of copy: {{ book.no_of_copy }}</label></br>
                 <label> Available copy: {{ book.no_of_available_copy }}</label></br>
               </div>
+
               <div class = "">
                 <input type = "button" value = "Edit Info" class = "btn-req-group" ng-click = "onClickUpdate(book)" ng-hide = "!isAdminLoggedin"/>
                 <input type = "button" value = "Delete Book" class = "btn-req-group" ng-click = "onClickDelete(book)" ng-hide = "!isAdminLoggedin"/>
@@ -60,52 +99,3 @@
     </div>
   </div>
 </div>
-
-    <!-- <ol class = "ol-style">
-      <li class = "li-book-list">
-        <div class = "book-image">
-          <img src = "/public/img/169367.svg" alt = "book-image" class = "img-style"/>
-        </div>
-        <div class = "book-info">
-          <label> Book Name: Pratical unix & Internet Security </label></br>
-          <label> Author: Simon Garfinkel and gene Spafford </label></br>
-          <label> No of copy: 10 </label></br>
-          <label> Available copy: 8 </label></br>
-          <div class = "">
-            <input type = "button" value = "Wish list" class = "btn-req-group"/>
-            <input type = "button" value = "Send Request" class = "btn-req-group"/>
-          </div>
-        </div>
-      </li>
-      <li class = "li-book-list">
-        <div class = "book-image">
-          <img src = "/public/img/169367.svg" alt = "book-image" class = "img-style"/>
-        </div>
-        <div class = "book-info">
-          <label> Book Name: Pratical unix & Internet Security </label></br>
-          <label> Author: Simon Garfinkel and gene Spafford </label></br>
-          <label> No of copy: 10 </label></br>
-          <label> Available copy: 8 </label></br>
-          <div class = "">
-            <input type = "button" value = "Wish list" class = "btn-req-group"/>
-            <input type = "button" value = "Send Request" class = "btn-req-group"/>
-          </div>
-        </div>
-      </li>
-
-      <li class = "li-book-list">
-        <div class = "book-image">
-          <img src = "/public/img/169367.svg" alt = "book-image" class = "img-style"/>
-        </div>
-        <div class = "book-info">
-          <label> Book Name: Pratical unix & Internet Security </label></br>
-          <label> Author: Simon Garfinkel and gene Spafford </label></br>
-          <label> No of copy: 10 </label></br>
-          <label> Available copy: 8 </label></br>
-          <div class = "">
-            <input type = "button" value = "Wish list" class = "btn-req-group"/>
-            <input type = "button" value = "Send Request" class = "btn-req-group"/>
-          </div>
-        </div>
-      </li>
-    </ol> -->

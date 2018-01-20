@@ -1,4 +1,4 @@
-  <div ng-controller = "listBookController" class = "nav-container">
+  <!-- <div ng-controller = "listBookController" class = "nav-container">
     <div class = "nav">
       <div class = "left-nav-menu">
         <ul>
@@ -13,6 +13,40 @@
           <li><a href = "#!profile">Profile</a></li>
           <li><input type = "button" value = "logout" ng-click = "onClickLogout()"/></li>
         </ul>
+      </div>
+    </div>
+  </div> -->
+
+  <style>
+    .left-nav-menu ul {
+      margin:0;
+      background-color: #777;
+      /*position: fixed;*/
+    }
+    .left-nav-menu li {
+      font-family: 'Oswald', sans-serif;
+      width: 12%;
+      font-size: 1.5em;
+      height: 70px;
+      line-height: 70px;
+      display: inline-block;
+      letter-spacing: 1.5px;
+      /*color: #000;*/
+      /*border-bottom: 1px solid #888;*/
+
+  }
+  </style>
+
+  <div ng-controller = "userController">
+    <div>
+      <div class = "nav-container">
+        <div class = "nav">
+          <div class = "left-nav-menu" style = "width: 100%">
+            <ul>
+              <li ng-repeat = "item in initData.navItem"><input type = "button" value = "{{item.name}}" ng-click = "onClickNavMenu(item)"/></li>
+            </ul>
+          </div>
+        </div>
       </div>
     </div>
   </div>

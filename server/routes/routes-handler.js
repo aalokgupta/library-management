@@ -171,6 +171,24 @@ var routesHandler = function(app) {
        res.status(200).send({success: "request has been sent to admin"});
      });
    });
+
+   app.get('/pending-book-request', authenticateUser, function(req, res){
+     console.log("url = "+JSON.stringify(req.params));
+     // var body = _.pick(req., ['user_id', 'book_id']);
+    // var new_request = new BookRequest(body);
+     //  BookRequest.find({}).then((requests) => {
+     //    Admin.findById({_id: requests.user_id}).then((user){
+     //
+     //    });
+     //    res.status(200).send({success: "request has been sent to admin"});
+     //  } (err) => {
+     //     res.status(400).send({error: err});
+     //  }
+     //   console.log(response);
+     //
+     // });
+   });
+
 };
 
 module.exports = {

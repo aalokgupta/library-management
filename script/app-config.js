@@ -41,7 +41,14 @@ angular.
           when('/requested-books', {
             template: '<requested-Books></requested-Books>'
           }).
-          otherwise('/login');
+          when('/user-page', {
+            template: '<user-Page></user-Page>'
+          }).
+          when('/', {
+            template: '<log-In></log-In>'
+          });
+          // .
+          // otherwise('/login');
         }
   ]);
 

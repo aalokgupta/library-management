@@ -1,0 +1,10 @@
+<html ng-app ="testApp">
+  <script src = "./angular.min.js"></script>
+  <script src = "./testModule.js"></script>
+  <body ng-controller = "testController">
+      <input type = "button" value = "btn1" ng-click = "onClickBtn1()"/>
+      <input type = "button" value = "btn2" ng-click = "onClickBtn2()"/>
+      <label>{{body}}</label>
+      <div ng-include src="body"></div>
+  </body>
+</html>

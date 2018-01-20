@@ -34,10 +34,7 @@ addBookApp.factory('AddBook', function($sessionStorage, request){
 });
 
 addBookApp.controller('addBookController', function($scope, $window, $sessionStorage, AddBook) {
-          // console.log($location.url());
   if($sessionStorage.token) {
-    // if($sessionStorage.admin) {
-    // }
     $scope.data = {
                   nav_admin_menu:  {name: "admin", url: "/public/add-book/admin-nav-menu.html"},
                   bookCategory: null,

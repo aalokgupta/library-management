@@ -35,8 +35,20 @@ var updateBookApp = angular.
 
 updateBookApp.controller('updateBookController', function($scope, $sessionStorage, $window,
                                                           BookInfo, updateBook) {
+
   console.log("inside updateBookController");
   console.log($sessionStorage.token);
+  $scope.initData = {
+                      navItem:
+                                 [{name: 'Home', url: '', count: 0},
+                                  {name: 'AddBook', url: '', count: 1},
+                                  {name: 'Pending', url: '', count: 2},
+                                  {name: 'Issued', url: '', count: 3},
+                                  {url: ''},
+                                  {name: 'Profile', url:  '', count: 5},
+                                  {name: 'Logout', url: '', count: 6}]
+                    };
+
   if($sessionStorage.token) {
   // if($sessionStorage.admin) {
     // }
@@ -52,6 +64,10 @@ updateBookApp.controller('updateBookController', function($scope, $sessionStorag
     $scope.bookNoOfCopy = BookInfo.getNoOfCopy();
     $scope.bookCopmanyId = BookInfo.getCompanyId();
 
+    $scope.onClickNavMenu = function(item) {
+      $window.location.href = '#!/user-page';
+      $sessionStorage.nav_menu = item.count;
+    }
     $scope.onClickUpdateBook = function() {
         var book = {
                     book_id: BookInfo.getBookId(),

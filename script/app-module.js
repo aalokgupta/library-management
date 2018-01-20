@@ -8,4 +8,6 @@ angular.module('libraryManagement', ['ngStorage',
     'allBooks',
     'viewBooks',
     'issuedBooks',
-    'requestedBooks']);
+    'requestedBooks',
+    'userPage',
+    'pendingRequest']);

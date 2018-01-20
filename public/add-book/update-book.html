@@ -21,13 +21,38 @@
       left: 30%;
       top: 2%;
     }
+    .left-nav-menu ul {
+      margin:0;
+      background-color: #777;
+      /*position: fixed;*/
+    }
+    .left-nav-menu li {
+      font-family: 'Oswald', sans-serif;
+      width: 12%;
+      font-size: 1.5em;
+      height: 70px;
+      line-height: 70px;
+      display: inline-block;
+      letter-spacing: 1.5px;
+      /*color: #000;*/
+      /*border-bottom: 1px solid #888;*/
+  }
 </style>
 
-<div ng-controller = "updateBookController" ng-model = "nav_admin_menu" ng-include = "nav_admin_menu.url">
+  <div class = "nav-container">
+        <div class = "nav">
+          <div class = "left-nav-menu" style = "width: 100%">
+            <ul>
+              <li ng-repeat = "item in initData.navItem"><a href = '' ng-click = "onClickNavMenu(item)">{{item.name}}</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    <div ng-include src="body"></div>
 </div>
 
 <div class = "book-body">
-  <div class = "body-left-nav">
+  <!-- <div class = "body-left-nav">
    <div class = "body-left-nav-container">
      <ul>
        <li><a href = "#!list-books">All Books</a></li>
@@ -36,7 +61,7 @@
        <li><a href = "#!remove-book">Remove Book</a></li>
      </ul>
    </div>
- </div>
+ </div> -->
 
    <div class = "add-book-body" ng-app = "addBook">
      <div class = "add-book-container" ng-controller = "updateBookController">
