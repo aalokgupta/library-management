@@ -8,6 +8,7 @@ libraryApp.factory('request', ['$http', function(http){
     // console.log(JSON.stringify(req, undefined, 2));
      return http(req).then((response) => {
       if(200 === response.status) {
+        console.log(JSON.stringify(response.data, undefined, 2));
             return response.data;
       }
       else {

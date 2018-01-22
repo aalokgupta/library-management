@@ -7,7 +7,7 @@ const {authenticateUser} = require('../authenticate/authenticateUser');
 const filepath = require('filepath');
 const _ = require('lodash');
 const bcrypt = require('bcryptjs');
-
+const async = require('async');
 
 const publicFolder = filepath.create(process.cwd(), 'public');
 
@@ -124,7 +124,7 @@ var routesHandler = function(app) {
 
   app.get('/get-all-books', function(req, res){
     Book.find({}).then((books) => {
-      console.log("books received = "+JSON.stringify(books));
+      // console.log("books received = "+JSON.stringify(books));
       res.send(books);
       res.end();
     }, (err) => {
@@ -172,23 +172,64 @@ var routesHandler = function(app) {
      });
    });
 
-   app.get('/pending-book-request', authenticateUser, function(req, res){
-     console.log("url = "+JSON.stringify(req.params));
-     // var body = _.pick(req., ['user_id', 'book_id']);
-    // var new_request = new BookRequest(body);
-     //  BookRequest.find({}).then((requests) => {
-     //    Admin.findById({_id: requests.user_id}).then((user){
-     //
-     //    });
-     //    res.status(200).send({success: "request has been sent to admin"});
-     //  } (err) => {
-     //     res.status(400).send({error: err});
-     //  }
-     //   console.log(response);
-     //
-     // });
-   });
+   function findAllPendingRequest() {
+     return BookRequest.find({});
+   }
 
+   function findUserName(id) {
+     return Admin.findById({_id: id}).exec();
+  }
+
+   function findBookName(id) {
+     return Book.findById({_id: id}).exec();
+   }
+
+  function getPendingRequestDetail(callback) {
+     var pending_request = [];
+     var userNameReceived = false;
+     var bookNameReceived = false;
+     var book_id, user_id;
+
+      findAllPendingRequest().then((requests) => {
+        var no_of_request = requests.length;
+        requests.forEach(function(err, request) {
+
+        var obj = {};
+        book_id = requests[request].book_id;
+        user_id = requests[request].user_id;
+
+        findUserName(user_id).then((user) => {
+          obj["username"] = user.username;
+          obj["time"] = requests[request]._id.getTimestamp();
+        });
+
+        findBookName(book_id).then((book) => {
+          obj["bookname"] = book.name;
+          console.log(requests[request]._id.getTimestamp());
+          pending_request.push(obj);
+          if(--no_of_request === 0) {
+            callback(null, pending_request);
+          }
+        });
+      });
+ }, (err) => {
+   console.log(err);
+   callback(err);
+ });
+}
+
+   app.get('/pending-book-request', function(req, res){
+     console.log("url = "+JSON.stringify(req.params));
+     console.log("inside pending-book-request");
+
+     getPendingRequestDetail(function(err, response){
+       console.log("kya ho raha hai be "+response);
+       if(err) {
+        res.status(401).send(err);
+       }
+       res.status(200).send(response);
+     });
+   });
 };
 
 module.exports = {
