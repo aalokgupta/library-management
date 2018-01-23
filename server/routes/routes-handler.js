@@ -184,51 +184,81 @@ var routesHandler = function(app) {
      return Book.findById({_id: id}).exec();
    }
 
-  function getPendingRequestDetail(callback) {
+   function getPendingRequestDetail(callback) {
      var pending_request = [];
-     var userNameReceived = false;
-     var bookNameReceived = false;
      var book_id, user_id;
 
-      findAllPendingRequest().then((requests) => {
-        var no_of_request = requests.length;
-        requests.forEach(function(err, request) {
+     findAllPendingRequest().then((requests) => {
+       var no_of_request = requests.length;
+       requests.forEach(function(err, request) {
+         var obj = {};
+         book_id = requests[request].book_id;
+         user_id = requests[request].user_id;
+         obj["request_id"] = requests[request]._id;
+         obj["user_id"] = user_id;
+         obj["book_id"] = book_id;
+         Promise.all([findUserName(user_id), findBookName(book_id)]).then((results) => {
+           obj["username"] = results[0].username;
+           obj["time"] = requests[request]._id.getTimestamp();
+           obj["bookname"] = results[1].name;
+           pending_request.push(obj);
+           if(--no_of_request === 0) {
+             callback(null, pending_request);
+           }
+         });
+       });
+     }).
+     catch(err => {
+       callback(err);
+     });
+   }
 
-        var obj = {};
-        book_id = requests[request].book_id;
-        user_id = requests[request].user_id;
-
-        findUserName(user_id).then((user) => {
-          obj["username"] = user.username;
-          obj["time"] = requests[request]._id.getTimestamp();
-        });
-
-        findBookName(book_id).then((book) => {
-          obj["bookname"] = book.name;
-          console.log(requests[request]._id.getTimestamp());
-          pending_request.push(obj);
-          if(--no_of_request === 0) {
-            callback(null, pending_request);
-          }
-        });
-      });
- }, (err) => {
-   console.log(err);
-   callback(err);
- });
-}
-
-   app.get('/pending-book-request', function(req, res){
+   app.get('/pending-book-request', authenticateUser, function(req, res){
      console.log("url = "+JSON.stringify(req.params));
      console.log("inside pending-book-request");
 
-     getPendingRequestDetail(function(err, response){
-       console.log("kya ho raha hai be "+response);
+     getPendingRequestDetail(function(err, response) {
+       // console.log("kya ho raha hai be "+response);
        if(err) {
         res.status(401).send(err);
        }
        res.status(200).send(response);
      });
+   });
+
+   app.post('/accept-book-request', authenticateUser, function(req, res) {
+     console.log(JSON.stringify(req.body));
+      var body = _.pick(req.body, ['request_id', 'book_id', 'user_id']);
+      console.log("inside accept-book-request "+body.request_id);
+
+      BookRequest.findById({_id: body.request_id}).then((request) => {
+        console.log(request);
+        request.updateBookIssuedInfo(function(err, result){
+          console.log("inside updateBookIssuedInfo");
+          if(err) {
+            console.log("error while updating book issue info"+err);
+          }
+
+          res.status(200).send({issue_id: result.issued_id});
+
+          Book.updateNoOfAvailableBook(body.book_id).then((response) => {
+            console.log("book info updtaed"+response);
+          });
+
+          Admin.findById(body.user_id).then((user) => {
+              var info = {book_id: book_id, issued_id: result.issued_id};
+              user.updateIssuedBookInfo(info, function(err, user){
+                if(err) {
+                  console.log(err);
+                }
+                console.log(user);
+              });
+          });
+        });
+      }).
+        catch(err => {
+          console.log("inside catch block"+err);
+        });
    });
 };
 

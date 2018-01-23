@@ -12,7 +12,7 @@ var pending_request_app = angular.module('pendingRequest', []).
                 method: 'GET',
                 url:   '/pending-book-request',
                 headers: {
-                  "access-a-auth": $sessionStorage.token,
+                  "access-x-auth": $sessionStorage.token,
                   "admin": $sessionStorage.admin
                 }
               };
@@ -23,6 +23,27 @@ var pending_request_app = angular.module('pendingRequest', []).
      }, (err) => {
        return err;
      });
+   }
+
+   factory.acceptRequest = function(accepted_book_info) {
+     var req = {
+       method: 'POST',
+       url: '/accept-book-request',
+       headers: {
+         "access-x-auth": $sessionStorage.token,
+         "admin": $sessionStorage.admin
+       },
+       data: {
+         user_id: accepted_book_info.user_id,
+         book_id: accepted_book_info.book_id,
+         request_id: accepted_book_info.request_id
+       }
+     };
+     return request.postmethod(req).then((response) => {
+       return response;
+     }, (err) => {
+       return err;
+     })
    }
    return factory;
  });
@@ -37,11 +58,21 @@ pending_request_app.controller('AdminPendingRequestController', function($scope,
         console.log(JSON.stringify(response));
           $scope.pending_requests = response;
       }, (err) => {
-
+          console.log("unable to fetch ");
       });
+
     }
   }
-  // $scope.pending_requests = [{user_name: 'Aalok',
-  //                             book_name: 'Data Structure in CPP',
-  //                             time: '2 days ago'}];
+
+  $scope.onClickAcceptBookRequest = function(request) {
+    if($sessionStorage.token) {
+      if("true" === $sessionStorage.admin) {
+        console.log("request "+JSON.stringify(request));
+        pendingReqService.acceptRequest(request).then((res) => {
+        }).catch(err => {
+          console.log(err);
+        });
+      }
+    }
+  }
 });

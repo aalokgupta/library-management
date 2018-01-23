@@ -1,5 +1,6 @@
 
 var mongoose = require('mongoose');
+var ObjectId = mongoose.Types.ObjectId;
 
 var bookRequest = new mongoose.Schema({
                         user_id :{
@@ -9,8 +10,15 @@ var bookRequest = new mongoose.Schema({
                         book_id: {
                           type: String,
                           required: true
-                        }
-});
+                        },
+                        book_issued:  {
+                          type: Boolean,
+                          required: true
+                        },
+                        issued_book_id: {
+                          type: String
+                       }
+                  });
 
 bookRequest.methods.createBookRequest = function(callback) {
   var request = this;
@@ -20,6 +28,19 @@ bookRequest.methods.createBookRequest = function(callback) {
       callback("Book requested did not created");
   });
 };
+
+bookRequest.methods.updateBookIssuedInfo = function(callback) {
+  var request = this;
+  var issue_id = new ObjectId();
+  console.log(request._id, issue_id);
+  BookRequest.update({_id: request._id}, {issued_book_id: issue_id}, function(err, document){
+    if(err) {
+      console.log("in book db"+err);
+      callback(err);
+    }
+    callback(null, document);
+  });
+}
 
 
 var BookRequest = mongoose.model('bookRequest', bookRequest);

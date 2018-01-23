@@ -97,7 +97,10 @@ BookSchema.statics.deleteBookById = function(book_id, callback) {
   }, (err) => {
       callback(`Book can not be find having id = ${book_id}`);
   });
+}
 
+BookSchema.statics.updateNoOfAvailableBook = function(book_id) {
+  return Book.update({_id: book_id}, {$inc: {no_of_available_copy: -1}}).exec();
 }
 
 BookSchema.pre('remove', function(next){

@@ -25,6 +25,12 @@ var adminSchema = new mongoose.Schema({
               type: Boolean,
               required: true
             },
+            issued_book: [{
+                book_id: {type: String, required: true},
+                issued_id: {type: String, required: true},
+                return_status: {type: Boolean, required: true},
+                return_date: {type: Date},
+            }],
             tokens: [{
               access: {type: String, required: true},
               token: {type: String, required: true}
@@ -116,6 +122,23 @@ adminSchema.statics.findBytoken = function(token, callback){
       console.log("User found ");
       return callback(null, user);
     });
+}
+
+
+adminSchema.methods.updateIssuedBookInfo = function(info, callback) {
+  var user = this;
+  var book_id =  info.book_id;
+  var issued_id = info.issued_id;
+  var return_status = false;
+  // var issued_book_info = {, , };
+  user.issued_info.push(book_id, issue_id, return_status);
+
+  user.save().then((user) => {
+      callback(null, user);
+  }, (err) => {
+    callback(err);
+    console.log("error while saving user" +err);
+  });
 }
 
 adminSchema.methods.removetoken = function(token){
