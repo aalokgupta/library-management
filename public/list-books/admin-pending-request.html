@@ -55,7 +55,6 @@
     cursor: pointer;
 }
 </style>
-
   <div class = "main-body" ng-controller = "AdminPendingRequestController">
     <div class = "container">
       <div class = "book-list-container">
@@ -65,7 +64,7 @@
                 <h2> {{ pending_req.username }}</h2>
                 <div style = "clear: both">
                 <label> Book: {{ pending_req.bookname }}</label></br>
-                <label> Requested at : {{ pending_req.time }}</label></br>
+                <label> Requested at : {{ pending_req.issued_at }}</label></br>
               </div>
               <div class = "">
                 <input type = "button" value = "Accept" class = "btn-req-group" ng-click = "onClickAcceptBookRequest(pending_req)"/>

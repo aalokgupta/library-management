@@ -1,1 +1,80 @@
-<h1>Issued Book</h1>
+<style>
+  .left-nav-menu ul {
+    margin:0;
+    background-color: #777;
+    /*position: fixed;*/
+  }
+  .left-nav-menu li {
+    font-family: 'Oswald', sans-serif;
+    width: 10%;
+    font-size: 1.5em;
+    height: 70px;
+    line-height: 70px;
+    display: inline-block;
+    /*color: #000;*/
+    /*border-bottom: 1px solid #888;*/
+
+}
+
+/* The Modal (background) */
+.modal {
+    display: none; /* Hidden by default */
+    position: relative;; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    padding-top: 100px; /* Location of the box */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content */
+.modal-content {
+    background-color: #fefefe;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+}
+
+/* The Close Button */
+.close {
+    color: #aaaaaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
+</style>
+
+<div class = "main-body" ng-controller = "adminIssuedBookController">
+  <div class = "container">
+    <div class = "book-list-container">
+      <ol class = "ol-style" ng-repeat = "book in issued_books">
+        <li class = "li-book-list">
+          <div class = "book-info">
+              <h2> Book: {{ book.bookname }}</h2>
+              <div style = "clear: both">
+              <label> Issued by: {{ book.username }}</label></br>
+              <label> Issued at : {{ book.issued_at }} </label></br>
+              <label> Return date : {{ book.return_at }} </label></br>
+            </div>
+            <div class = "">
+              <input type = "button" value = "Return Req" class = "btn-req-group" ng-click = "onClickReturnBookRequest(book)"/>
+              <input type = "button" value = "Remainder" class = "btn-req-group" ng-click = "onClickSendReminderRequest(book)"/>
+            </div>
+          </div>
+        </li>
+      </ol>
+    </div>
+  </div>
+</div>

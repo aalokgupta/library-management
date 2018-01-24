@@ -162,6 +162,7 @@ var routesHandler = function(app) {
    app.post('/request-book', authenticateUser, function(req, res){
      console.log("url = "+JSON.stringify(req.body));
      var body = _.pick(req.body, ['user_id', 'book_id']);
+     body["book_issued"] = false;
      var new_request = new BookRequest(body);
      new_request.createBookRequest(function(err, response){
        if(err) {
@@ -173,7 +174,7 @@ var routesHandler = function(app) {
    });
 
    function findAllPendingRequest() {
-     return BookRequest.find({});
+     return BookRequest.find({book_issued: false});
    }
 
    function findUserName(id) {
@@ -184,45 +185,69 @@ var routesHandler = function(app) {
      return Book.findById({_id: id}).exec();
    }
 
-   function getPendingRequestDetail(callback) {
-     var pending_request = [];
+   function getUserAndBookInfoFromBookRequest(requests, callback) {
+     var book_user_info = [];
      var book_id, user_id;
+     var no_of_request = requests.length;
+     requests.forEach(function(err, request) {
+       var obj = {};
+       book_id = requests[request].book_id;
+       user_id = requests[request].user_id;
+       obj["request_id"] = requests[request]._id;
+       obj["user_id"] = user_id;
+       obj["book_id"] = book_id;
+       Promise.all([findUserName(user_id), findBookName(book_id)]).then((results) => {
+         obj["username"] = results[0].username;
+         obj["issued_at"] = requests[request]._id.getTimestamp();
+         obj["bookname"] =  results[1].name;
+         obj["return_at"] = requests[request]._id.getTimestamp();
+         book_user_info.push(obj);
+         if(--no_of_request === 0) {
+           callback(null, book_user_info);
+         }
+       }, (err) => {
+         callback(err);
+       })
+     });
+   }
 
+   function getPendingRequestDetail(callback) {
      findAllPendingRequest().then((requests) => {
-       var no_of_request = requests.length;
-       requests.forEach(function(err, request) {
-         var obj = {};
-         book_id = requests[request].book_id;
-         user_id = requests[request].user_id;
-         obj["request_id"] = requests[request]._id;
-         obj["user_id"] = user_id;
-         obj["book_id"] = book_id;
-         Promise.all([findUserName(user_id), findBookName(book_id)]).then((results) => {
-           obj["username"] = results[0].username;
-           obj["time"] = requests[request]._id.getTimestamp();
-           obj["bookname"] = results[1].name;
-           pending_request.push(obj);
-           if(--no_of_request === 0) {
-             callback(null, pending_request);
-           }
-         });
+       getUserAndBookInfoFromBookRequest(requests, function(err, pending_request){
+         if(err) {
+           callback(err);
+         }
+         console.log("pending_request = "+pending_request);
+         callback(null, pending_request);
        });
-     }).
-     catch(err => {
-       callback(err);
+     }).catch(err => {
+        callback(err);
      });
    }
 
    app.get('/pending-book-request', authenticateUser, function(req, res){
      console.log("url = "+JSON.stringify(req.params));
      console.log("inside pending-book-request");
-
      getPendingRequestDetail(function(err, response) {
-       // console.log("kya ho raha hai be "+response);
        if(err) {
         res.status(401).send(err);
        }
        res.status(200).send(response);
+     });
+   });
+
+   app.get('/issued-books', authenticateUser, function(req, res){
+     console.log("inside pending-book-request");
+     BookRequest.getAllIssuedBook().then((issuedBooks) => {
+       getUserAndBookInfoFromBookRequest(issuedBooks, function(err, issued_book) {
+         if(err) {
+           res.status(401).send({error: err});
+         }
+         console.log("pending_request = "+issued_book);
+         res.status(200).send(issued_book);
+       });
+     }).catch( err => {
+        res.status(401).send({error: err});
      });
    });
 
@@ -238,9 +263,7 @@ var routesHandler = function(app) {
           if(err) {
             console.log("error while updating book issue info"+err);
           }
-
           res.status(200).send({issue_id: result.issued_id});
-
           Book.updateNoOfAvailableBook(body.book_id).then((response) => {
             console.log("book info updtaed"+response);
           });

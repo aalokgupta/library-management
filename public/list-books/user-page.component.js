@@ -5,7 +5,36 @@ var listBookApp = angular.
                     controller: 'userController'
                   });
 
- listBookApp.controller('userController', ['$scope', '$sessionStorage',  function($scope, $sessionStorage) {
+  listBookApp.factory('performLogout', function($sessionStorage, request){
+    var factory = {};
+
+    factory.logout = function() {
+     console.log("logout clicked");
+     var req = {
+       method: 'DELETE',
+       url: `/logout`,
+
+       headers: {
+         "access-x-auth": $sessionStorage.token,
+         "admin": $sessionStorage.admin
+         }
+     };
+
+     request.getmethod(req).then((success) => {
+       $sessionStorage.token = "";
+       $sessionStorage.admin = "";
+       console.log("token deleted");
+       window.location.href = "/#!/login";
+       console.log("user logout successfully");
+     }, (err) => {
+       console.log("err occured while performing logout");
+     });
+   }
+    return factory;
+  });
+
+ listBookApp.controller('userController', function($scope, $sessionStorage,
+                                                   performLogout) {
 
   var body_url =   [  {url: '/public/list-books/list-book.html'},
                       {url: '/public/add-book/add-book.html'},
@@ -61,8 +90,8 @@ var listBookApp = angular.
     case 5:
       break;
     case 6:
-      $scope.body = body_url[6].url;
+       performLogout.logout();
       break;
       }
     }
-  }]);
+  });

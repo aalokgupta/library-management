@@ -64,7 +64,7 @@ console.log("inside get Book Detail");
 
   var factory = {};
   console.log(sessionStorage.token);
-  factory.getBookDetail =  function(){
+  factory.getBookDetail =  function() {
     var req = {
               method: 'GET',
               url: '/get-all-books',
@@ -74,38 +74,12 @@ console.log("inside get Book Detail");
               }
             };
     // console.log("getBookDetail", JSON.stringify(req, undefined, 2));
-    return request.getmethod(req).then((books) => {
+  return request.getmethod(req).then((books) => {
         return books;
     }, (err) => {
 
     });
-    return;
   }
-
-  factory.logout = function() {
-   console.log("logout clicked");
-   var req = {
-     method: 'DELETE',
-     url: `/logout`,
-     headers: {
-       "access-x-auth": sessionStorage.token
-       // "admin": $sessionStorage.admin
-       }
-   };
-
-   return request.getmethod(req).then((success) => {
-     sessionStorage.token = "";
-     sessionStorage.admin = "";
-     console.log("token deleted");
-     window.location.href = "/#!/login";
-     console.log("user logOut successfully");
-     return;
-   }, (err) => {
-     console.log("err occured while performing logout");
-   });
-   }
-
-
   return factory;
 }]);
 

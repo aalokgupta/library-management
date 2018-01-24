@@ -69,6 +69,9 @@ pending_request_app.controller('AdminPendingRequestController', function($scope,
       if("true" === $sessionStorage.admin) {
         console.log("request "+JSON.stringify(request));
         pendingReqService.acceptRequest(request).then((res) => {
+          var index = $scope.pending_requests.indexOf(request);
+          console.log("book has been issued for the user");
+          $scope.pending_requests.splice(index, 1);
         }).catch(err => {
           console.log(err);
         });

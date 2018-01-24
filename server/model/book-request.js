@@ -33,7 +33,7 @@ bookRequest.methods.updateBookIssuedInfo = function(callback) {
   var request = this;
   var issue_id = new ObjectId();
   console.log(request._id, issue_id);
-  BookRequest.update({_id: request._id}, {issued_book_id: issue_id}, function(err, document){
+  BookRequest.update({_id: request._id}, {issued_book_id: issue_id, book_issued: true}, function(err, document){
     if(err) {
       console.log("in book db"+err);
       callback(err);
@@ -42,6 +42,9 @@ bookRequest.methods.updateBookIssuedInfo = function(callback) {
   });
 }
 
+bookRequest.statics.getAllIssuedBook = function() {
+   return BookRequest.find({book_issued: true}).exec();
+}
 
 var BookRequest = mongoose.model('bookRequest', bookRequest);
 module.exports = {

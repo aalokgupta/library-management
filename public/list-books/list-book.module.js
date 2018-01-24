@@ -14,6 +14,6 @@ angular.module('pendingRequest', [
           component('pendingRequest', {}
       );
 
-angular.module('AdminIssuedBooks', [
+angular.module('adminIssuedbooks', [
               'ngRoute',
               'ngStorage']);
