@@ -141,6 +141,18 @@ adminSchema.methods.updateIssuedBookInfo = function(info, callback) {
   });
 }
 
+adminSchema.methods.getAllIssuedBook = function(callback) {
+  var user = this;
+
+  // user.find({'issued_book.return_status': false}, {'issued_book.book_id'})
+  user.find( { "issued_book.return_status": false}).then( (books) => {
+    console.log(books);
+    return books;
+  }, (err) => {
+      console.log(err);
+  });
+}
+
 adminSchema.methods.removetoken = function(token){
   var user = this;
   return user.update({

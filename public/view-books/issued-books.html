@@ -1,20 +1,20 @@
 <style>
-  .left-nav-menu ul {
+  /*.left-nav-menu ul {
     margin:0;
     background-color: #777;
     /*position: fixed;*/
   }
-  .left-nav-menu li {
+  /*.left-nav-menu li {
     font-family: 'Oswald', sans-serif;
     width: 10%;
     font-size: 1.5em;
     height: 70px;
     line-height: 70px;
     display: inline-block;
-    /*color: #000;*/
-    /*border-bottom: 1px solid #888;*/
+    color: #000;
+    border-bottom: 1px solid #888;
 
-}
+}*/
 
 /* The Modal (background) */
 .modal {
@@ -62,7 +62,7 @@
       <ol class = "ol-style" ng-repeat = "book in issued_books">
         <li class = "li-book-list">
           <div class = "book-info">
-              <h2> Book: {{ book.bookname }}</h2>
+              <h2> Book: {{ book.name }}</h2>
               <div style = "clear: both">
               <!-- <label> Issued by: {{ book.username }}</label></br> -->
               <label> Issued at : {{ book.issued_at }} </label></br>

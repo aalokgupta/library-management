@@ -32,8 +32,8 @@ angular.
             // user has to be deleted from sessionStorage
             template: '<all-Books></all-Books>'
           }).
-          when('/view-books', {
-            template: '<view-Books></view-Books>'
+          when('/user-home', {
+            template: '<user-home></user-home>'
           }).
           when('/issued-books', {
             template: '<issued-Books></issued-Books>'

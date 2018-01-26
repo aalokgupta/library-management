@@ -95,7 +95,7 @@ loginApp.controller('loginController', function($scope, $sessionStorage, $window
 
           if("false" === $sessionStorage.admin) {
             console.log("inside view book");
-              $window.location.href =  '/#!/view-books';
+              $window.location.href =  '/#!/user-home';
           }
           else if("true" === $sessionStorage.admin) {
               // $window.location.href =  '/#!/list-books';

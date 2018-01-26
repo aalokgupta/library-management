@@ -1,0 +1,33 @@
+<div ng-controller = "homeController">
+  <!-- <div  ng-include  src="initData.nav_bar.url"> </div> -->
+  <style>
+    .left-nav-menu ul {
+      margin:0;
+      background-color: #777;
+      /*position: fixed;*/
+    }
+    .left-nav-menu li {
+      font-family: 'Oswald', sans-serif;
+      width: 12%;
+      font-size: 1.5em;
+      height: 70px;
+      line-height: 70px;
+      display: inline-block;
+      letter-spacing: 1.5px;
+      /*color: #000;*/
+      /*border-bottom: 1px solid #888;*/
+
+  }
+  </style>
+
+      <div class = "nav-container">
+        <div class = "nav">
+          <div class = "left-nav-menu" style = "width: 100%">
+            <ul>
+              <li ng-repeat = "item in initData.navItem"><a href = '' ng-click = "onClickNavMenu(item)">{{item.name}}</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    <div ng-include src="body"></div>
+</div>

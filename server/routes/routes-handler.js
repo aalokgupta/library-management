@@ -8,6 +8,7 @@ const filepath = require('filepath');
 const _ = require('lodash');
 const bcrypt = require('bcryptjs');
 const async = require('async');
+const moment = require('moment');
 
 const publicFolder = filepath.create(process.cwd(), 'public');
 
@@ -177,9 +178,13 @@ var routesHandler = function(app) {
      return BookRequest.find({book_issued: false});
    }
 
+   function findAllIssuedRequest() {
+     return BookRequest.find({book_issued: true});
+   }
+
    function findUserName(id) {
      return Admin.findById({_id: id}).exec();
-  }
+   }
 
    function findBookName(id) {
      return Book.findById({_id: id}).exec();
@@ -282,6 +287,69 @@ var routesHandler = function(app) {
         catch(err => {
           console.log("inside catch block"+err);
         });
+   });
+
+   app.get('/get-issued-books/:user_id', authenticateUser, function(req, res){
+     console.log("inside get-issued-book");
+     console.log(req.params.user_id);
+     var issued_book = [];
+     findAllIssuedRequest().then((requests) => {
+       var no_of_request = requests.length;
+       requests.forEach(function(err, request) {
+         var obj = {};
+         console.log("no of books = "+requests[request].book_id);
+          findBookName(requests[request].book_id).then((book) => {
+            obj = book;
+            obj["issued_at"] = request.issued_at;
+            var day = moment(request.issued_at);
+            console.log("after 30 days = "+moment(request.issued_at).add(30, 'days'));
+            console.log("day = "+day);
+            // obj["return_date"] = moment(request.issued_at) + request.return_duration;
+            issued_book.push(book);
+            if(--no_of_request === 0) {
+              res.status(200).send(issued_book);
+            }
+          }, (err) => {
+              res.status(401).send(err);
+          });
+       });
+      });
+
+        //   findBookName(request.book_id).then((book) => {
+        //    // console.log("book "+book);
+        //     issued_book.push(book);
+        //     console.log("$$$$$$$$$$$$$$$$$$$$$$$$$$$$no_of_request = "+no_of_request);
+        //     if(--no_of_request === 0) {
+        //       console.log("no of book sent = "+issued_book);
+        //       res.status(200).send(issued_book);
+        //     }
+        //   }, (err) => {
+        //     console.log(err);
+        //     res.status(400).send(err);
+        // });
+      // });
+        // console.log("no of element = "+cursor.count());
+
+
+
+       // cursor.on('close', function(){
+       //   console.log("cursor close");
+       // });
+       // // console.log("requests "+requests);
+       // var no_of_request = requests.length;
+       // // console.log("no_of_request "+no_of_request);
+       // var issued_book = [];
+       //
+       // requests.forEach(function(err, request) {
+       //   console.log("")
+       //   console.log("####### "+requests[request]);
+       //   if(err) {
+       //     throw new Error(err);
+       //   }
+
+
+
+       // });
    });
 };
 

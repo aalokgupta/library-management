@@ -17,7 +17,7 @@ libraryApp.factory('issuedBookService', function($sessionStorage, request) {
   factory.getUserIssuedBook = function(user_id) {
     var req = {
     method: 'GET',
-    url: `/issued-books/${user_id}`,
+    url: `/get-issued-books/${user_id}`,
     headers: {
       "access-x-auth": $sessionStorage.token
     }
