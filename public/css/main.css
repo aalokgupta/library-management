@@ -67,7 +67,7 @@ body{
   background-color: #000;
 }
 .nav a.active {
-  background-color: #999;
+  background-color: #000;
 }
 
 
@@ -184,6 +184,13 @@ table tr {
   font-weight: bold;
   margin: 5px;
   /*border-radius: px;*/
+}
+.my-buttons:hover {
+  background-color: #fff;
+}
+.my-buttons:active {
+  background-color: #ccc;
+  color: red;
 }
 
 .footer{

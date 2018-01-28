@@ -68,28 +68,35 @@ var listBookApp = angular.
   }
   else {
       $scope.body = body_url[0].url;
+      $scope.nav_active_color = ['#000', '', '', '', '', '', ''];
   }
 
   $scope.onClickNavMenu = function(item) {
   switch (item.count) {
     case 0:
       $scope.body = body_url[0].url;
+      $scope.nav_active_color = ['#000', '', '', '', '', '', ''];
       break;
     case 1:
       $scope.body = body_url[1].url;
+      $scope.nav_active_color = ['', '#000', '', '', '', '', ''];
       break;
     case 2:
       $scope.body = body_url[2].url;
+      $scope.nav_active_color = ['', '', '#000', '', '', '', ''];
       break;
     case 3:
       $scope.body = body_url[3].url;
+      $scope.nav_active_color = ['', '', '', '#000', '', '', ''];
       break;
     case 4:
       $scope.body = body_url[4].url;
+      $scope.nav_active_color = ['', '', '', '', '#000', '', ''];
       break;
     case 5:
       break;
     case 6:
+      $scope.nav_active_color = ['', '', '', '', '', '', '#000'];
        performLogout.logout();
       break;
       }

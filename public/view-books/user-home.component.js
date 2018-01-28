@@ -54,7 +54,6 @@ var homeApp = angular.
                                   {name: 'Profile', url:  '', count: 5},
                                   {name: 'Logout', url: '', count: 6}]
                     };
-
   /* nav_menu is used for the purpose when nav menu is clicked by user while updating the book detail
      updating book detail containing same nav_menu copy. When menu clicked the menu count is set to sessionStorage
      for reference
@@ -67,29 +66,36 @@ var homeApp = angular.
   }
   else {
       $scope.body = body_url[0].url;
+      $scope.colors = ['#000', '', '', '', '', '', ''];
   }
 
   $scope.onClickNavMenu = function(item) {
   switch (item.count) {
     case 0:
       $scope.body = body_url[0].url;
+      $scope.colors = ['#000', '', '', '', '', '', ''];
       break;
     case 1:
       $scope.body = body_url[1].url;
+      $scope.colors = ['', '#000', '', '', '', '', ''];
       break;
     case 2:
       $scope.body = body_url[2].url;
+      $scope.colors = ['', '', '#000', '', '', '', ''];
       break;
     case 3:
       $scope.body = body_url[3].url;
+      $scope.colors = ['', '', '', '#000', '', '', ''];
       break;
     case 4:
       $scope.body = body_url[4].url;
+      $scope.colors = ['', '', '', '', '#000', '', ''];
       break;
     case 5:
       break;
     case 6:
        performLogout.logout();
+      $scope.colors = ['', '', '', '', '', '', '#000'];
       break;
       }
     }

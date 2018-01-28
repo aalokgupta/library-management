@@ -299,13 +299,11 @@ var routesHandler = function(app) {
          var obj = {};
          console.log("no of books = "+requests[request].book_id);
           findBookName(requests[request].book_id).then((book) => {
-            obj = book;
-            obj["issued_at"] = request.issued_at;
-            var day = moment(request.issued_at);
-            console.log("after 30 days = "+moment(request.issued_at).add(30, 'days'));
-            console.log("day = "+day);
-            // obj["return_date"] = moment(request.issued_at) + request.return_duration;
-            issued_book.push(book);
+            obj["name"] = book.name;
+            obj["book_id"] = book._id;
+            obj["issued_at"] = moment(request.issued_at).format("DD-MM-YYYY");
+            obj["return_at"] = moment(request.issued_at).add(30, 'days').format("DD-MM-YYYY");
+            issued_book.push(obj);
             if(--no_of_request === 0) {
               res.status(200).send(issued_book);
             }
@@ -313,7 +311,7 @@ var routesHandler = function(app) {
               res.status(401).send(err);
           });
        });
-      });
+  });
 
         //   findBookName(request.book_id).then((book) => {
         //    // console.log("book "+book);

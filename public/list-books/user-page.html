@@ -24,7 +24,8 @@
         <div class = "nav">
           <div class = "left-nav-menu" style = "width: 100%">
             <ul>
-              <li ng-repeat = "item in initData.navItem"><a href = '' ng-click = "onClickNavMenu(item)">{{item.name}}</a></li>
+              <li ng-repeat = "item in initData.navItem">
+                <a href = '' ng-click = "onClickNavMenu(item)" ng-style = "{'background-color': nav_active_color[$index]}">{{item.name}}</a></li>
             </ul>
           </div>
         </div>

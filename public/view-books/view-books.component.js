@@ -18,7 +18,7 @@
           'access-x-auth': $sessionStorage.token,
           'admin': $sessionStorage.admin
         }
-      };
+    };
 
     return request.getmethod(req).then((books) => {
         return books;
@@ -92,5 +92,9 @@
           });
         }
       }
+    }
+
+    $scope.onClickSubscribe = function(book) {
+      //
     }
  });
