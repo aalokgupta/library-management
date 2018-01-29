@@ -75,6 +75,13 @@ BookSchema.statics.updateBookDetail = function(book_id, book_info, callback) {
   // });
 }
 
+BookSchema.statics.getNoOfAvailableBook = function(book_id, callback) {
+  Book.findById({_id: book_id}, {no_of_available_copy: 1, _id: 0}).then((res) => {
+    callback(null, res["no_of_available_copy"]);
+  }, (err) => {
+      callback(err);
+  });
+}
 
 BookSchema.statics.findBookById = function(book_id) {
   console.log("book_id = "+book_id);

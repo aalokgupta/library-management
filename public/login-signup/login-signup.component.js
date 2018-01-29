@@ -11,13 +11,24 @@ var allBookModule = angular.module('allBooks').
             });
 
 allBookModule.controller('bookController', function($scope, $http){
-  $scope.nav_template =  {name: "login", url: "/public/login-signup/nav-login-signup.html"};
 
-  var menus = [ {url: '#!all-books', name: 'Books'},
-                {url: '#!login', name: 'Login'},
-                {url: '#!signup', name: 'Signup'}
-              ];
-  $scope.menus = menus;
+  $scope.data = {
+    nav_template: {name: "signup", url: "/public/login-signup/nav-login-signup.html"},
+    menus: [{url: '#!all-books', name: 'Books'},
+                  {url: '#!login', name: 'Login'},
+                  {url: '#!signup', name: 'Signup'}
+                ],
+    nav_active_color: ['#000', '', '']
+  };
+
+  // $scope.nav_template =  {name: "login", url: "/public/login-signup/nav-login-signup.html"};
+  //
+  // var menus = [ {url: '#!all-books', name: 'Books'},
+  //               {url: '#!login', name: 'Login'},
+  //               {url: '#!signup', name: 'Signup'}
+  //             ];
+  //
+  // $scope.menus = menus;
 
   var req = { method: 'GET',
               url: '/get-all-books',
@@ -56,14 +67,13 @@ loginApp.factory('login', function($sessionStorage, request){
 
 loginApp.controller('loginController', function($scope, $sessionStorage, $window, login){
   // read username password admin/user and secret key
-  var menus =
-
   $scope.data = {
-    menus: [ {url: '#!all-books', name: 'Books'},
+    nav_template: {name: "signup", url: "/public/login-signup/nav-login-signup.html"},
+    menus: [{url: '#!all-books', name: 'Books'},
                   {url: '#!login', name: 'Login'},
                   {url: '#!signup', name: 'Signup'}
                 ],
-    nav_template:  {name: "login", url: "/public/login-signup/nav-login-signup.html"}
+    nav_active_color: ['', '#000', '']
   };
 
   if($sessionStorage.token) {
@@ -149,7 +159,8 @@ signupApp.controller('signupController', function($scope, $sessionStorage, $wind
       menus: [{url: '#!all-books', name: 'Books'},
                     {url: '#!login', name: 'Login'},
                     {url: '#!signup', name: 'Signup'}
-                  ]
+                  ],
+      nav_active_color: ['', '', '#000']
     };
 
     $scope.onClickSignup = function() {

@@ -46,9 +46,9 @@
 
     return request.postmethod(req).then((response) => {
       // console.log("response = "+response);
-        return response;
+        // return response;
       }, (err) => {
-        return err;
+        // return err;
       });
     }
     return factory;
@@ -85,7 +85,7 @@
           };
           requestBook.sendRequest(user_req).then((response) => {
             console.log("request has been sent to admin");
-            console.log(response);
+            // console.log(response);
           }, (err) => {
             console.log("server is not responding try after some time");
             console.log(err);

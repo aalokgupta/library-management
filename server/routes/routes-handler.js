@@ -137,6 +137,7 @@ var routesHandler = function(app) {
    app.post('/add-book', authenticateUser, function(req, res){
      var body = _.pick(req.body, ['name', 'author', 'isbn', 'companyid', 'no_of_copy']);
      body["no_of_available_copy"] = body["no_of_copy"];
+     body["name"] = body["name"].toUpperCase().trim();
      console.log("book body = "+JSON.stringify(body));
      var newBook = new Book(body);
      newBook.addNewBook(body, function(err, book){
@@ -165,14 +166,27 @@ var routesHandler = function(app) {
      var body = _.pick(req.body, ['user_id', 'book_id']);
      body["book_issued"] = false;
      var new_request = new BookRequest(body);
-     new_request.createBookRequest(function(err, response){
-       if(err) {
-         res.status(400).send({error: err});
-       }
-       console.log(response);
-       res.status(200).send({success: "request has been sent to admin"});
+     Book.getNoOfAvailableBook(body['book_id'], function(err, count) {
+        if(err) {
+          res.status(401).send(err);
+        }
+        if(0 < count) {
+          console.log("count == "+count);
+          new_request.createBookRequest(function(err, response){
+            if(err) {
+              res.status(400).send({error: err});
+            }
+            console.log(response);
+            res.status(200).send({success: "request has been sent to admin"});
+          });
+        }
+        else {
+          res.status(400).send("Book not available");
+        }
      });
-   });
+  });
+
+
 
    function findAllPendingRequest() {
      return BookRequest.find({book_issued: false});
@@ -203,9 +217,10 @@ var routesHandler = function(app) {
        obj["book_id"] = book_id;
        Promise.all([findUserName(user_id), findBookName(book_id)]).then((results) => {
          obj["username"] = results[0].username;
-         obj["issued_at"] = requests[request]._id.getTimestamp();
+         obj["issued_at"] = moment(requests[request]._id.getTimestamp()).format('DD-MM-YYYY');
          obj["bookname"] =  results[1].name;
-         obj["return_at"] = requests[request]._id.getTimestamp();
+         obj["return_at"] = moment(requests[request]._id.getTimestamp()).format('DD-MM-YYYY');
+         obj["requested_at"] = moment(requests[request]._id.getTimestamp()).format('DD-MM-YYYY');
          book_user_info.push(obj);
          if(--no_of_request === 0) {
            callback(null, book_user_info);

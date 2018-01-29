@@ -1,27 +1,24 @@
 
-<!-- <html ng-app = "signUpModule">
-  <head>
-    <title>SignUp</title>
-    <link href = "/public/css/main.css" rel="stylesheet" type="text/css">
-    <script src = "/script/angular.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-route.js"></script>
-    <script src = "/client-controller/signup-controller.js"> </script>
-
-  </head> -->
   <style>
   h2{
     text-align: center;
+  }
+  .signup-form {
+    width: 80%;
+    margin-left: 20%;
+    height: auto;
+    display: block;
+    text-align: center;
+    border-bottom: 5px;
   }
   </style>
 
 <div>
   <div ng-controller = "signupController" ng-model = "nav_template" ng-include = "data.nav_template.url">
   </div>
-
-  <div ng-controller = "signupController">
     <div class = "signup-login">
         <h2 class = "signup-login-header">SignUp</h2>
-        <form name = "signupForm" ng-controller = "signupController" novalidate>
+        <form name = "signupForm" ng-controller = "signupController" class = "signup-form" novalidate>
             <table>
               <tr>
                 <td>
@@ -96,5 +93,3 @@
     </br>
     </br>
   </div>
-
-</div>
