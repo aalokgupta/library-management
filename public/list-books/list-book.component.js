@@ -60,10 +60,7 @@ listBookApp.factory('deleteBookDetail',
 
 listBookApp.factory('getAllBooksDetail', ['$sessionStorage' , 'request' ,'$window',
                                           function(sessionStorage, request, window){
-console.log("inside get Book Detail");
-
   var factory = {};
-  console.log(sessionStorage.token);
   factory.getBookDetail =  function() {
     var req = {
               method: 'GET',

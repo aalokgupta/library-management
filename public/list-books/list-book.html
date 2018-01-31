@@ -77,11 +77,11 @@
         <ol class = "ol-style" ng-repeat = "book in books">
           <li class = "li-book-list">
             <div class = "book-info">
-              <h2> {{ book.name }}</h2>
+              <h2> {{ book.book.name }}</h2>
               <div style = "clear: both">
-                <label> Author: {{ book.author }}</label></br>
-                <label> No of copy: {{ book.no_of_copy }}</label></br>
-                <label> Available copy: {{ book.no_of_available_copy }}</label></br>
+                <label> Author: {{ book.book.author }}</label></br>
+                <label> No of copy: {{ book.book.no_of_copy }}</label></br>
+                <label> Available copy: {{ book.book.no_of_available_copy }}</label></br>
               </div>
 
               <div class = "">

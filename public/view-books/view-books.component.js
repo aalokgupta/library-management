@@ -16,16 +16,19 @@
         url: '/get-all-books',
         headers: {
           'access-x-auth': $sessionStorage.token,
-          'admin': $sessionStorage.admin
+          'admin': $sessionStorage.admin,
+          'user_id': $sessionStorage.user_id
         }
     };
 
-    return request.getmethod(req).then((books) => {
-        return books;
-      }, (err) => {
-        return err;
-      });
-    }
+      return request.getmethod(req).then( (books) => {
+        console.log("inside then");
+          return books;
+        }, (err) => {
+          console.log("inside reject");
+          return err;
+        });
+  }
 
     return factory;
   });
@@ -40,17 +43,19 @@
         data: user_req,
         headers: {
           'access-x-auth': $sessionStorage.token,
-          'admin': $sessionStorage.admin
+          'admin': $sessionStorage.admin,
         }
       };
-
-    return request.postmethod(req).then((response) => {
-      // console.log("response = "+response);
-        // return response;
-      }, (err) => {
-        // return err;
-      });
-    }
+    return new Promise(function(resolve, reject) {
+      request.postmethod(req).then((response) => {
+        // console.log("response = "+response);
+          resolve(response);
+        }, (err) => {
+           console.log("########"+err);
+           reject(err);
+        });
+    });
+  }
     return factory;
   });
 
@@ -65,9 +70,10 @@
     if($sessionStorage.token) {
       if("false" === $sessionStorage.admin) {
           Books.getAllBooks().then((books) => {
+            console.log(JSON.stringify(books, undefined, 2));
           $scope.books =  books;
         }, (err) => {
-          console.log("Can not fetch books from server");
+            console.log("Can not fetch books from server");
         });
       }
     }
@@ -81,11 +87,11 @@
         if("false" === $sessionStorage.admin) {
           var user_req = {
             user_id: $sessionStorage.user_id,
-            book_id: book._id
+            book_id: book.book._id
           };
           requestBook.sendRequest(user_req).then((response) => {
             console.log("request has been sent to admin");
-            // console.log(response);
+            console.log(response);
           }, (err) => {
             console.log("server is not responding try after some time");
             console.log(err);

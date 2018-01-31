@@ -4,46 +4,51 @@ var libraryApp = angular.module('libraryManagement');
 libraryApp.factory('request', ['$http', function(http){
   var request = {};
 
-  request.getmethod = function(req) {
+   request.getmethod = function(req) {
     // console.log(JSON.stringify(req, undefined, 2));
-     return http(req).then((response) => {
-      if(200 === response.status) {
-        console.log(JSON.stringify(response.data, undefined, 2));
+      return http(req).then((response) => {
+       if(200 === response.status) {
             return response.data;
-      }
-      else {
-        console.log(" Details can be not fetched from server ");
-      }
-    }, (error) => {
-        console.log("Details can be fetched from server "+error);
-    });
+       }
+       else {
+          return response.status;
+       }
+     }, (error) => {
+         return error;
+     });
   }
 
   request.postmethod = function(req) {
-     return http(req).then((response, header) => {
+    return new Promise(function(resolve, reject){
+      http(req).then((response, header) => {
       if(200 === response.status) {
-            return response;
+          resolve(response);
       }
       else {
-        return response.status;
+          reject(response.status);
       }
     }, (error) => {
-        return err;
+      console.log(error);
+        reject(error);
     });
+  });
+
   }
 
 
   request.deletemethod =  function(req) {
-    return http(req).then((response) => {
-      if(200 === response.status) {
-        console.log("books successfully deleted ");
-        return response.data;
-      }
-      else {
-        return response.status;
-      }
-    }, (err) => {
-      return err;
+    return new Promise(function(resolve, reject){
+      http(req).then((response) => {
+        if(200 === response.status) {
+          console.log("books successfully deleted ");
+          resolve(response.data);
+        }
+        else {
+          reject(response.status);
+        }
+      }, (err) => {
+        reject(err);
+      });
     });
   }
 

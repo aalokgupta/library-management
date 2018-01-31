@@ -123,15 +123,47 @@ var routesHandler = function(app) {
     });
   });
 
-  app.get('/get-all-books', function(req, res){
-    Book.find({}).then((books) => {
-      // console.log("books received = "+JSON.stringify(books));
-      res.send(books);
-      res.end();
-    }, (err) => {
-      res.status(401).send({});
+  function find_and_filter_book_based_on_issued_requested(books, user_id) {
+    let no_of_books = books.length;
+    let book_info_to_be_sent = [];
+    return new Promise(function(resolve, reject) {
+      books.forEach(function(err, book) {
+        let requested = false;
+        let isIssued = false;
+        // console.log(books[book]._id, user_id);
+        BookRequest.find({book_id: books[book]._id, user_id: user_id}, function(err, request) {
+          if(err) {
+            console.log(err);
+          }
+          // console.log("request.length = "+request.length, request);
+          isRequested = request.length > 0 ? true : false;
+
+          /* isIssued is used for filter out the issued book in the client side
+          it require change*/
+          if(isRequested === true) {
+              isIssued =  false;//request.book_issued;
+          }
+
+          console.log("isIssued = "+isIssued);
+          book_info_to_be_sent.push({book: books[book], requested: isRequested, issued: isIssued});
+          if(--no_of_books === 0) {
+            resolve(book_info_to_be_sent);
+          }
+        });
+      });
     });
+  }
+
+  app.get('/get-all-books', function(req, res) {
+    var user_id = req.header("user_id");
+    Book.find({}).then((books) => {
+      find_and_filter_book_based_on_issued_requested(books, user_id).then( (book_info_to_be_sent) => {
+        res.status(200).send(book_info_to_be_sent);
+      }).catch(function(err) {
+        res.status(400).send(err);
+      });
   });
+});
 
 
    app.post('/add-book', authenticateUser, function(req, res){
