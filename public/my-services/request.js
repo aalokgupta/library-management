@@ -19,20 +19,18 @@ libraryApp.factory('request', ['$http', function(http){
   }
 
   request.postmethod = function(req) {
-    return new Promise(function(resolve, reject){
-      http(req).then((response, header) => {
+    return http(req).then((response, header) => {
       if(200 === response.status) {
-          resolve(response);
+          console.log(response.headers('token'));
+          return response;
       }
-      else {
-          reject(response.status);
-      }
+      // else {
+      //     return response.status;
+      // }
     }, (error) => {
-      console.log(error);
-        reject(error);
+        console.log(error);
+        return error;
     });
-  });
-
   }
 
 

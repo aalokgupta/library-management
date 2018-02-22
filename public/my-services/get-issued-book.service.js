@@ -8,7 +8,8 @@ libraryApp.factory('issuedBookService', function($sessionStorage, request) {
       url: '/issued-books',
       headers: {
         "access-x-auth": $sessionStorage.token,
-        "admin": $sessionStorage.admin
+        "admin": $sessionStorage.admin,
+        "user_id": $sessionStorage.user_id
       }
     };
   return request.getmethod(req);
@@ -19,7 +20,8 @@ libraryApp.factory('issuedBookService', function($sessionStorage, request) {
     method: 'GET',
     url: `/get-issued-books/${user_id}`,
     headers: {
-      "access-x-auth": $sessionStorage.token
+      "access-x-auth": $sessionStorage.token,
+      "user_id": $sessionStorage.user_id
     }
   };
   return request.getmethod(req);

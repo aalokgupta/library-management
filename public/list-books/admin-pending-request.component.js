@@ -13,7 +13,8 @@ var pending_request_app = angular.module('pendingRequest', []).
                 url:   '/pending-book-request',
                 headers: {
                   "access-x-auth": $sessionStorage.token,
-                  "admin": $sessionStorage.admin
+                  "admin": $sessionStorage.admin,
+                  "user_id": $sessionStorage.user_id
                 }
               };
 
@@ -31,7 +32,8 @@ var pending_request_app = angular.module('pendingRequest', []).
        url: '/accept-book-request',
        headers: {
          "access-x-auth": $sessionStorage.token,
-         "admin": $sessionStorage.admin
+         "admin": $sessionStorage.admin,
+         "user_id": $sessionStorage.user_id
        },
        data: {
          user_id: accepted_book_info.user_id,

@@ -1,40 +1,13 @@
 var homeApp = angular.
-                  module('userHome').
-                  component('userHome', {
-                    templateUrl: '/public/view-books/user-home.html',
+                  module('userLanding').
+                  component('userLanding', {
+                    templateUrl: '/public/view-books/user-landing-page.html',
                     controller: 'homeController'
                   });
 
-  listBookApp.factory('performLogout', function($sessionStorage, request){
-    var factory = {};
-
-    factory.logout = function() {
-     console.log("logout clicked");
-     var req = {
-       method: 'DELETE',
-       url: `/logout`,
-       headers: {
-         "access-x-auth": $sessionStorage.token,
-         "admin": $sessionStorage.admin
-        }
-     };
-
-     request.getmethod(req).then((success) => {
-       $sessionStorage.token = "";
-       $sessionStorage.admin = "";
-       console.log("token deleted");
-       window.location.href = "/#!/login";
-       console.log("user logout successfully");
-     }, (err) => {
-       console.log("err occured while performing logout");
-     });
-   }
-    return factory;
-  });
-
- listBookApp.controller('homeController', function($scope, $sessionStorage,
+ homeApp.controller('homeController', function($scope, $sessionStorage,
                                                    performLogout) {
-
+  console.log("user landing page");
   var body_url =   [  {url: '/public/view-books/view-books.html'},
                       {url: '/public/view-books/issued-books.html'},
                       {url: '/public/view-books/requested-books.html'},

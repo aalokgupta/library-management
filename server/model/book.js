@@ -45,18 +45,20 @@ BookSchema.methods.addNewBook = function(book, callback) {
 BookSchema.statics.updateBookDetail = function(book_id, book_info, callback) {
   console.log("book_info"+JSON.stringify(book_info));
   Book.findBookById(book_id).then((book) => {
+  console.log("book found = "+book);
   var no_of_book_issued = parseInt(book.no_of_copy) - parseInt(book.no_of_available_copy);
   if(parseInt(book_info.no_of_copy) < no_of_book_issued) {
         return callback("No of book can not be updated, it has already issued the available book and no_of_copy can not be less than that");
   }
   else {
-        // var diff =  parseInt(book_info.no_of_copy) - parseInt(book.no_of_copy);
+        var diff =  parseInt(book_info.no_of_copy) - parseInt(book.no_of_copy);
         console.log("book differenece = "+diff);
         Book.update({_id: book_id}, { $set: book_info,
                                       $inc: {no_of_available_copy: diff}
                                    }, function(err, noOfBook){
 
                                       if(err) {
+
                                         callback(err);
                                       }
                                       callback(null, noOfBook);
@@ -66,13 +68,6 @@ BookSchema.statics.updateBookDetail = function(book_id, book_info, callback) {
     console.log(err);
       callback(err);
   });
-
-  // Book.findOneAndUpdate({_id: book_id}, {$set: book_info}).exec(function(err, num){
-  //   if(err) {
-  //     callback(err);
-  //   }
-  //   callback(null, num);
-  // });
 }
 
 BookSchema.statics.getNoOfAvailableBook = function(book_id, callback) {

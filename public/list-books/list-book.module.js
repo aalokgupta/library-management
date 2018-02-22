@@ -1,4 +1,4 @@
-angular.module('userPage', [
+angular.module('adminLanding', [
     'ngRoute',
     'ngStorage']);
 

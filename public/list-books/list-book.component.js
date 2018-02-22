@@ -13,6 +13,7 @@ listBookApp.factory('updateBookDetail', function($sessionStorage, BookInfo){
     console.log("inside updateBookDetail");
    if($sessionStorage.token) {
      console.log($sessionStorage.token);
+     console.log("****Book Name = ", book.name);
      BookInfo.setBookName(book.name);
      BookInfo.setAuthorName(book.author);
      BookInfo.setNoOfCopy(book.no_of_copy);
@@ -40,7 +41,8 @@ listBookApp.factory('deleteBookDetail',
                       url: `/delete-book`,
                       headers: {
                         "access-x-auth": $sessionStorage.token,
-                        "admin": $sessionStorage.admin
+                        "admin": $sessionStorage.admin,
+                        "user_id": $sessionStorage.user_id
                       },
                       data: {
                         book_id: id
@@ -117,7 +119,6 @@ listBookApp.controller('listBookController', ['$scope',
       if("true" === $sessionStorage.admin) {
          getAllBooksDetail.getBookDetail().then((books) => {
             $scope.books = books;
-
          }, (err) => {
             $scope.books = {};
             $scope.isAdminLoggedin = false;
@@ -133,7 +134,7 @@ listBookApp.controller('listBookController', ['$scope',
 
     $scope.onClickUpdate = function(book) {
       console.log("update book click on "+JSON.stringify(book));
-      updateBookDetail.updateBook(book);
+      updateBookDetail.updateBook(book.book);
       $scope.myValue = true;
       $window.location.href = "#!/update-book";
     }
@@ -150,14 +151,12 @@ listBookApp.controller('listBookController', ['$scope',
 
      $scope.onClickDelete = function(book) {
        console.log("onclick delete "+JSON.stringify(book));
-       deleteBookDetail.deleteBook(book._id).then( (response) => {
+       deleteBookDetail.deleteBook(book.book._id).then( (response) => {
          var index = $scope.books.indexOf(book);
          $scope.books.splice(index, 1);
-         // $scope.books = books;
          console.log("book detail has benn deleted from book database "+response);
        }, (err) => {
           console.log(err);
        });
      }
-    //
   }]);

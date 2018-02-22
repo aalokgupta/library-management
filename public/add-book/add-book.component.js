@@ -6,10 +6,8 @@ var addBookApp = angular.
   });
 
 addBookApp.factory('AddBook', function($sessionStorage, request){
-
   var factory = {};
-
-  factory.add = function(book){
+  factory.add = function(book) {
     // console.log("book");
     var req = {
                 method: 'POST',
@@ -17,9 +15,9 @@ addBookApp.factory('AddBook', function($sessionStorage, request){
                 data: book,
                 headers: {
                   "access-x-auth": $sessionStorage.token,
-                  "admin": $sessionStorage.admin
+                  "admin": $sessionStorage.admin,
+                  "user_id": $sessionStorage.user_id
                 }
-
               }
     return request.postmethod(req).then((response) => {
         if(200 === response.status) {
@@ -62,7 +60,7 @@ addBookApp.controller('addBookController', function($scope, $window, $sessionSto
 
       AddBook.add(book).then((response) => {
           console.log("Book has been added successfully");
-          $window.location.href = "#!/list-book";
+          $window.location.href = "#!/admin-landing";
       }, (err) => {
         console.log("server not responsding while adding book");
       });

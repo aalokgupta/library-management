@@ -31,26 +31,40 @@ var adminSchema = new mongoose.Schema({
                 return_status: {type: Boolean, required: true},
                 return_date: {type: Date},
             }],
-            tokens: [{
-              access: {type: String, required: true},
-              token: {type: String, required: true}
-            }]
+            // tokens: [{
+            //   access: {type: String, required: true},
+            //   token: {type: String, required: true}
+            // }]
             // will include token fot secure login
 });
 
-
-adminSchema.methods.generateAuthTokens = function(callback) {
-  var user = this;
-  var access = 'auth';
-  var token = jwt.sign({_id: user._id.toHexString(), access}, 'abc123').toString();
-  user.tokens.push({access, token});
-  user.save().then((document) => {
-      // console.log("inside writing token"+document);
-      callback(null, token);
+adminSchema.methods.saveNewUser = function(callback) {
+   // var user = this;
+  // var access = 'auth';
+  // user.tokens.push({access, token});
+  this.save().then((user) => {
+        // console.log("inside writing token"+document);
+      var token = user.generateAuthTokens();
+      callback(null, {token: token, user_id: user._id});
   }).catch((err) => {
     console.log("error while save user informatin "+err);
   });
 }
+
+adminSchema.methods.generateAuthTokens = function() {
+  var user = this;
+  var access = 'auth';
+  var token = jwt.sign({_id: user._id.toHexString(), access}, 'abc123').toString();
+  return token;
+  // user.tokens.push({access, token});
+  // user.save().then((document) => {
+  //     // console.log("inside writing token"+document);
+  //     callback(null, token);
+  // }).catch((err) => {
+  //   console.log("error while save user informatin "+err);
+  // });
+}
+
 
 adminSchema.pre('save', function(next){
   var user = this;

@@ -9,5 +9,5 @@ angular.module('libraryManagement', ['ngStorage',
     'viewBooks',
     'issuedBooks',
     'requestedBooks',
-    'userPage',
-    'pendingRequest', 'adminIssuedbooks', 'userHome']);
+    'adminLanding',
+    'pendingRequest', 'adminIssuedbooks', 'userLanding']);

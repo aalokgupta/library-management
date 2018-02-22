@@ -104,12 +104,12 @@ loginApp.controller('loginController', function($scope, $sessionStorage, $window
           $sessionStorage.user_id = response.headers("user_id");
 
           if("false" === $sessionStorage.admin) {
-            console.log("inside view book");
-              $window.location.href =  '/#!/user-home';
+            console.log("User Login");
+              $window.location.href =  '/#!/user-landing';
           }
           else if("true" === $sessionStorage.admin) {
-              // $window.location.href =  '/#!/list-books';
-              $window.location.href =  '/#!/user-page';
+              console.log("Admin Login");
+              $window.location.href =  '/#!/admin-landing';
           }
 
         }, (err) => {
@@ -132,7 +132,7 @@ var signupApp = angular.module('signUp').
           controller: 'signupController'
         });
 
-signupApp.factory('signup', function($sessionStorage, request) {
+signupApp.factory('signupFactory', function($sessionStorage, request) {
 
   var factory = {};
   factory.signup = function(userInfo) {
@@ -142,9 +142,12 @@ signupApp.factory('signup', function($sessionStorage, request) {
       data: userInfo
     };
    return request.postmethod(req).then((response) => {
-        $sessionStorgae.token = response.headers("token");
-        $sessionStorgae.admin = response.headers("admin");
+        console.log("response = "+response.headers("token"));
+        $sessionStorage.token = response.headers("token");
+        $sessionStorage.admin = response.headers("admin");
         $sessionStorage.user_id = response.headers("user_id");
+        return response;
+
     }, (err) => {
         return err;
     });
@@ -152,7 +155,7 @@ signupApp.factory('signup', function($sessionStorage, request) {
   return factory;
 });
 
-signupApp.controller('signupController', function($scope, $sessionStorage, $window, signup) {
+signupApp.controller('signupController', function($scope, $sessionStorage, $window, signupFactory) {
 
     $scope.data = {
       nav_template: {name: "signup", url: "/public/login-signup/nav-login-signup.html"},
@@ -184,20 +187,24 @@ signupApp.controller('signupController', function($scope, $sessionStorage, $wind
                          admin_secret_key: $scope.admin_secret_key
                 };
 
-                signup.signup(userInfo).then((response) => {
+                signupFactory.signup(userInfo).then((response) => {
+                  console.log("user-id = "+$sessionStorage.user_id);
+                  console.log("token = "+$sessionStorage.token);
+                  console.log("admin = "+$sessionStorage.admin);
+
                     if($sessionStorage.token) {
-                      if(true === $sessionStorgae.admin) {
-                        $window.location.href =  '/#!/list-books'
+                      if("true" === $sessionStorage.admin) {
+                        $window.location.href =  '/#!/admin-landing';
                       }
-                      else if(false === $sessionStorgae.admin) {
-                        $window.location.href =  '/#!/view-books'
+                      else if("false" === $sessionStorage.admin) {
+                        $window.location.href =  '/#!/user-landing';
                       }
                       else {
                         // $window.location.href =  '/#!/view-books'
                       }
                     }
                 }, (err) => {
-                    console.log("not able to signup");
+                    console.log("not able to signup "+err);
                 });
               }
               else {

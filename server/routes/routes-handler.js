@@ -34,29 +34,28 @@ var routesHandler = function(app) {
 
     console.log("body "+JSON.stringify(body));
     var newAdmin = new Admin(body);
-    newAdmin.save().then((user) => {
-       console.log("user saved into database "+user);
-       newAdmin.generateAuthTokens(function(err, token){
+    // newAdmin.save().then((user) => {
+       // console.log("user saved into database "+user);
+       newAdmin.saveNewUser(function(err, data) {
+       // newAdmin.generateAuthTokens(function(err, token){
         if(err){
           console.log("error while generating auth "+err);
           res.status(400).send();
         }
         //#################### only for testing need to remove########################
-        newAdmin.removetoken(token);
+        // newAdmin.removetoken(token);
         //#################### only for testing need to remove########################
 
-        res.header('access-x-auth', token);
+        res.header('token', data.token);
         res.header('admin', body.admin);
-        res.header('user_id', user._id);
-        console.log("user save into db and generated token is "+token);
+        res.header('user_id', data.user_id);
+        console.log("user save into db and generated token is "+data.token);
         res.status(200).send(); // need to redirect to admin dashboard
       });
-    }).catch( (err) => {
-      console.log("error while writing user data into db"+err);
-    });
+    // }).catch( (err) => {
+    //   console.log("error while writing user data into db"+err);
+    // });
   });
-
-
 
   app.post('/login', function(req, res) {
     console.log("/login requested ");
@@ -70,28 +69,15 @@ var routesHandler = function(app) {
       console.log("admin log-in");
     }
     console.log("User log-in");
-      // Admin.findBytoken(req.header("access-x-auth")).then((user) => {
-      //   console.log("token from header = "+req.header("access-x-auth"))
-      //   res.header("access-x-auth", user.tokens[0].token);
-      //   res.header('admin', user.admin);
-      //   res.status(200).send();
-      // }).catch((err) => {
-      //   res.status(401).send();
-      // });
 
       Admin.findByCredentials(body.email, body.password).then((user) => {
         console.log("user found = "+user);
-        user.generateAuthTokens(function(err, token) {
-          if(err) {
-              res.status(401).send();
-              res.end();
-          }
-          console.log("token generated");
-          res.header('access-x-auth', token);
-          res.header('admin', body.admin);
-          res.header('user_id', user._id);
-          res.status(200).send();
-        });
+        var token = user.generateAuthTokens();
+        console.log("token generated");
+        res.header('access-x-auth', token);
+        res.header('admin', body.admin);
+        res.header('user_id', user._id);
+        res.status(200).send();
       }).catch(() => {
           res.status(401).send();
       });
@@ -103,6 +89,7 @@ var routesHandler = function(app) {
     var body = _.pick(req.body.book, ['name', 'author', 'isbn', 'companyid', 'no_of_copy']);
     Book.updateBookDetail(req.body.book.book_id, body, function(err, numOfBook){
       if(err) {
+        console.log("error while updaing book detail "+err);
         res.status(400).send({error: err});
       }
       console.log("book detail has been updated");
@@ -112,15 +99,15 @@ var routesHandler = function(app) {
 
 
   app.delete('/logout', authenticateUser, function(req, res){
-    if(!req.user){
-      console.log("user token removed from db");
-      res.status(400).send();
-    }
-    req.user.removetoken(req.token).then(() => {
-      res.status(200).send();
-    }, () => {
-      console.log("error occured while removing token from database");
-    });
+    // if(!req.user){
+    //   console.log("user token removed from db");
+    // }
+      res.status(200).send({'logout': 'successfully logout'});
+    // req.user.removetoken(req.token).then(() => {
+    //   res.status(200).send();
+    // }, () => {
+    //   console.log("error occured while removing token from database");
+    // });
   });
 
   function find_and_filter_book_based_on_issued_requested(books, user_id) {
@@ -144,7 +131,7 @@ var routesHandler = function(app) {
               isIssued =  false;//request.book_issued;
           }
 
-          console.log("isIssued = "+isIssued);
+          // console.log("isIssued = "+isIssued);
           book_info_to_be_sent.push({book: books[book], requested: isRequested, issued: isIssued});
           if(--no_of_books === 0) {
             resolve(book_info_to_be_sent);
@@ -251,7 +238,7 @@ var routesHandler = function(app) {
          obj["username"] = results[0].username;
          obj["issued_at"] = moment(requests[request]._id.getTimestamp()).format('DD-MM-YYYY');
          obj["bookname"] =  results[1].name;
-         obj["return_at"] = moment(requests[request]._id.getTimestamp()).format('DD-MM-YYYY');
+         obj["return_at"] = moment(requests[request]._id.getTimestamp()).add(30, 'days').format('DD-MM-YYYY');
          obj["requested_at"] = moment(requests[request]._id.getTimestamp()).format('DD-MM-YYYY');
          book_user_info.push(obj);
          if(--no_of_request === 0) {
@@ -359,42 +346,6 @@ var routesHandler = function(app) {
           });
        });
   });
-
-        //   findBookName(request.book_id).then((book) => {
-        //    // console.log("book "+book);
-        //     issued_book.push(book);
-        //     console.log("$$$$$$$$$$$$$$$$$$$$$$$$$$$$no_of_request = "+no_of_request);
-        //     if(--no_of_request === 0) {
-        //       console.log("no of book sent = "+issued_book);
-        //       res.status(200).send(issued_book);
-        //     }
-        //   }, (err) => {
-        //     console.log(err);
-        //     res.status(400).send(err);
-        // });
-      // });
-        // console.log("no of element = "+cursor.count());
-
-
-
-       // cursor.on('close', function(){
-       //   console.log("cursor close");
-       // });
-       // // console.log("requests "+requests);
-       // var no_of_request = requests.length;
-       // // console.log("no_of_request "+no_of_request);
-       // var issued_book = [];
-       //
-       // requests.forEach(function(err, request) {
-       //   console.log("")
-       //   console.log("####### "+requests[request]);
-       //   if(err) {
-       //     throw new Error(err);
-       //   }
-
-
-
-       // });
    });
 };
 

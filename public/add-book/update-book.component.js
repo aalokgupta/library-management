@@ -10,12 +10,14 @@ var updateBookApp = angular.
    var factory = {};
 
    factory.update = function(book) {
+     console.log("user id = "+$sessionStorage.user_id);
      var req = {
                 method: 'post',
                 url: '/update-book',
                 headers: {
                   "access-x-auth": $sessionStorage.token,
-                  "admin": $sessionStorage.admin
+                  "admin": $sessionStorage.admin,
+                  "user_id": $sessionStorage.user_id
                 },
                 data: {
                   book: book
@@ -28,7 +30,6 @@ var updateBookApp = angular.
        return err;
      });
    }
-
    return factory;
  });
 
@@ -37,7 +38,7 @@ updateBookApp.controller('updateBookController', function($scope, $sessionStorag
                                                           BookInfo, updateBook) {
 
   console.log("inside updateBookController");
-  console.log($sessionStorage.token);
+  // console.log($sessionStorage.token);
   $scope.initData = {
                       navItem:
                                  [{name: 'Home', url: '', count: 0},
@@ -53,7 +54,7 @@ updateBookApp.controller('updateBookController', function($scope, $sessionStorag
   // if($sessionStorage.admin) {
     // }
     $scope.nav_admin_menu =  {name: "admin", url: "/public/add-book/admin-nav-menu.html"};
-    console.log("book-name "+BookInfo.getAuthorName());
+    // console.log("book-name "+BookInfo.getAuthorName());
 
     var book = {};
 
@@ -65,7 +66,7 @@ updateBookApp.controller('updateBookController', function($scope, $sessionStorag
     $scope.bookCopmanyId = BookInfo.getCompanyId();
 
     $scope.onClickNavMenu = function(item) {
-      $window.location.href = '#!/user-page';
+      $window.location.href = '#!/admin-landing';
       $sessionStorage.nav_menu = item.count;
     }
     $scope.onClickUpdateBook = function() {
@@ -80,7 +81,7 @@ updateBookApp.controller('updateBookController', function($scope, $sessionStorag
 
          updateBook.update(book).then((updatedBook) => {
             console.log("book detail has been updated = "+updatedBook);
-            $window.location.href = "#!/list-book";
+            $window.location.href = "#!/admin-landing";
         }, (err) => {
             return new Error("book detail can not be updated");
         });

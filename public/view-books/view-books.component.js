@@ -44,6 +44,7 @@
         headers: {
           'access-x-auth': $sessionStorage.token,
           'admin': $sessionStorage.admin,
+          'user_id': $sessionStorage.user_id
         }
       };
     return new Promise(function(resolve, reject) {
