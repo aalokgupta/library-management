@@ -40,17 +40,17 @@ bookRequest.methods.updateBookIssuedInfo = function(callback) {
   var issue_id = new ObjectId();
   console.log(request._id, issue_id);
   var issued_book_info = {};
-  issued_book_info["issue_book_id"] = issue_id;
+  issued_book_info["issued_book_id"] = issue_id;
   issued_book_info["book_issued"] = true;
   issued_book_info["issued_at"] = Date.now();
   issued_book_info["return_duration"] = 30;
-
-  BookRequest.update({_id: request._id}, issued_book_info, function(err, document){
+  console.log(JSON.stringify(issued_book_info, undefined, 2));
+  BookRequest.update({_id: request._id}, issued_book_info, {new: true}, function(err, document){
     if(err) {
       console.log("in book db"+err);
       callback(err);
     }
-    callback(null, document);
+    callback(null, issue_id);
   });
 }
 

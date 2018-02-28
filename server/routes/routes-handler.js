@@ -206,7 +206,6 @@ var routesHandler = function(app) {
   });
 
 
-
    function findAllPendingRequest() {
      return BookRequest.find({book_issued: false});
    }
@@ -238,7 +237,7 @@ var routesHandler = function(app) {
          obj["username"] = results[0].username;
          obj["issued_at"] = moment(requests[request]._id.getTimestamp()).format('DD-MM-YYYY');
          obj["bookname"] =  results[1].name;
-         obj["return_at"] = moment(requests[request]._id.getTimestamp()).add(30, 'days').format('DD-MM-YYYY');
+         obj["return_at"] = moment(requests[request]._id.getTimestamp()).add(requests[request].return_duration, 'days').format('DD-MM-YYYY');
          obj["requested_at"] = moment(requests[request]._id.getTimestamp()).format('DD-MM-YYYY');
          book_user_info.push(obj);
          if(--no_of_request === 0) {
@@ -291,30 +290,28 @@ var routesHandler = function(app) {
    });
 
    app.post('/accept-book-request', authenticateUser, function(req, res) {
-     console.log(JSON.stringify(req.body));
       var body = _.pick(req.body, ['request_id', 'book_id', 'user_id']);
       console.log("inside accept-book-request "+body.request_id);
 
       BookRequest.findById({_id: body.request_id}).then((request) => {
-        console.log(request);
-        request.updateBookIssuedInfo(function(err, result){
+        request.updateBookIssuedInfo(function(err, issued_id){
           console.log("inside updateBookIssuedInfo");
           if(err) {
             console.log("error while updating book issue info"+err);
           }
-          res.status(200).send({issue_id: result.issued_id});
+          console.log("issued book info = "+issued_id);
+          res.status(200).send({issue_id: issued_id});
           Book.updateNoOfAvailableBook(body.book_id).then((response) => {
             console.log("book info updtaed"+response);
           });
 
-          Admin.findById(body.user_id).then((user) => {
-              var info = {book_id: book_id, issued_id: result.issued_id};
-              user.updateIssuedBookInfo(info, function(err, user){
-                if(err) {
-                  console.log(err);
-                }
-                console.log(user);
-              });
+          var info = {user_id: body.user_id, book_id: body.book_id, issued_id: issued_id};
+
+          Admin.updateIssuedBookInfo(info, function(err, user){
+            if(err) {
+              console.log(err);
+            }
+            console.log("Issued Book Info has been updated into database");
           });
         });
       }).
@@ -346,7 +343,7 @@ var routesHandler = function(app) {
           });
        });
   });
-   });
+});
 };
 
 module.exports = {
