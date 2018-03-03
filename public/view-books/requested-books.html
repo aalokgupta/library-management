@@ -1,0 +1,62 @@
+<style>
+.modal {
+    display: none; /* Hidden by default */
+    position: relative;; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    padding-top: 100px; /* Location of the box */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content */
+.modal-content {
+    background-color: #fefefe;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+}
+
+/* The Close Button */
+.close {
+    color: #aaaaaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
+</style>
+
+<div class = "main-body" ng-controller = "requestedBooksController">
+  <div class = "container">
+    <div class = "book-list-container">
+      <ol class = "ol-style" ng-repeat = "book in requested_books">
+        <li class = "li-book-list">
+          <div class = "book-info">
+              <h2> Book: {{ book.name }}</h2>
+              <div style = "clear: both">
+              <!-- <label> Issued by: {{ book.username }}</label></br> -->
+              <label> Requested at : {{ book.requested_at }} </label></br>
+              <label> Available Status : {{ book.available_status ? "Available" : "Not Available" }} </label></br>
+            </div>
+            <div class = "">
+              <input type = "button" value = "Cancel Request" class = "btn-req-group my-buttons" ng-click = "onClickCancelRequest(book)"/>
+              <!-- <input type = "button" value = "Extend ret date" class = "btn-req-group my-buttons" ng-click = "onClickSendExtendReturnDate(book)"/> -->
+            </div>
+          </div>
+        </li>
+      </ol>
+    </div>
+  </div>
+</div>

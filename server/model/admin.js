@@ -29,7 +29,7 @@ var adminSchema = new mongoose.Schema({
                 book_id: {type: String, required: true},
                 issued_id: {type: String, required: true},
                 return_status: {type: Boolean, required: true},
-                return_date: {type: Date},
+                return_duration: {type: Number},
             }],
             // tokens: [{
             //   access: {type: String, required: true},
@@ -139,20 +139,27 @@ adminSchema.statics.findBytoken = function(token, callback){
 }
 
 
-adminSchema.methods.updateIssuedBookInfo = function(info, callback) {
+adminSchema.statics.updateIssuedBookInfo = function(info, callback) {
+  console.log("inside updateIssuedBookInfo");
+
   var user = this;
   var book_id =  info.book_id;
   var issued_id = info.issued_id;
   var return_status = false;
-  // var issued_book_info = {, , };
-  user.issued_info.push(book_id, issue_id, return_status);
+  var return_duration = 30;
 
-  user.save().then((user) => {
-      callback(null, user);
-  }, (err) => {
-    callback(err);
-    console.log("error while saving user" +err);
-  });
+  var issued_book_info = {book_id: info.book_id, issued_id: info.issued_id,
+                          return_status: return_status, return_duration: return_duration};
+
+  Admin.update({_id: info.user_id}, {$push: {issued_book: issued_book_info} }, {new: true}, function(err, user) {
+      if(err) {
+        console.log("error while saving user" +err);
+        callback(err);
+      }
+      console.log("Book Issued information has been updated for user "+user);
+       callback(null);
+    });
+
 }
 
 adminSchema.methods.getAllIssuedBook = function(callback) {

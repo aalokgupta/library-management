@@ -83,22 +83,33 @@
       console.log("on click user logout");
     }
 
+    var requestedJustNow = false;
     $scope.onClickRequestBook = function(book) {
-      if($sessionStorage.token) {
-        if("false" === $sessionStorage.admin) {
-          var user_req = {
-            user_id: $sessionStorage.user_id,
-            book_id: book.book._id
-          };
-          requestBook.sendRequest(user_req).then((response) => {
-            console.log("request has been sent to admin");
-            console.log(response);
-          }, (err) => {
-            console.log("server is not responding try after some time");
-            console.log(err);
-          });
+      if(book.requested === true) {
+          console.log("Book already requested");
+      } else if(book.requested === false && requestedJustNow === true) {
+          console.log("Book has been requested just now");
+      }
+      else {
+        requestedJustNow = true;
+        if($sessionStorage.token) {
+          if("false" === $sessionStorage.admin) {
+            var user_req = {
+              user_id: $sessionStorage.user_id,
+              book_id: book.book._id
+            };
+            requestBook.sendRequest(user_req).then((response) => {
+              console.log("request has been sent to admin");
+              console.log(response);
+            }, (err) => {
+              console.log("server is not responding try after some time");
+              console.log(err);
+            });
+          }
         }
       }
+
+
     }
 
     $scope.onClickSubscribe = function(book) {

@@ -205,7 +205,6 @@ var routesHandler = function(app) {
      });
   });
 
-
    function findAllPendingRequest() {
      return BookRequest.find({book_issued: false});
    }
@@ -220,6 +219,10 @@ var routesHandler = function(app) {
 
    function findBookName(id) {
      return Book.findById({_id: id}).exec();
+   }
+
+   function findAllBookRequestByUser(user_id) {
+     return BookRequest.find({user_id: user_id, book_issued: false});
    }
 
    function getUserAndBookInfoFromBookRequest(requests, callback) {
@@ -329,21 +332,50 @@ var routesHandler = function(app) {
        requests.forEach(function(err, request) {
          var obj = {};
          console.log("no of books = "+requests[request].book_id);
-          findBookName(requests[request].book_id).then((book) => {
-            obj["name"] = book.name;
-            obj["book_id"] = book._id;
-            obj["issued_at"] = moment(request.issued_at).format("DD-MM-YYYY");
-            obj["return_at"] = moment(request.issued_at).add(30, 'days').format("DD-MM-YYYY");
-            issued_book.push(obj);
-            if(--no_of_request === 0) {
-              res.status(200).send(issued_book);
-            }
-          }, (err) => {
-              res.status(401).send(err);
-          });
-       });
+         findBookName(requests[request].book_id).then((book) => {
+         obj["name"] = book.name;
+         obj["book_id"] = book._id;
+         obj["issued_at"] = moment(request.issued_at).format("DD-MM-YYYY");
+         obj["return_at"] = moment(request.issued_at).add(30, 'days').format("DD-MM-YYYY");
+         issued_book.push(obj);
+         if(--no_of_request === 0) {
+            res.status(200).send(issued_book);
+          }
+        }, (err) => {
+             res.status(401).send(err);
+        });
+      });
+    });
   });
+
+  app.get('/get-requested-books/:user_id', authenticateUser, function(req, res){
+    console.log("inside get-requested-book");
+    console.log(req.params.user_id);
+    var requested_book = [];
+    findAllBookRequestByUser(req.params.user_id).then((requests) => {
+      var no_of_request = requests.length;
+      requests.forEach(function(err, request) {
+        var obj = {};
+        console.log("no of books = "+requests[request].book_id);
+        findBookName(requests[request].book_id).then((book) => {
+
+          obj["name"] = book.name;
+          obj["book_id"] = book._id;
+          obj["available_status"] = book.no_of_available_copy > 0 ? true : false;
+          obj["requested_at"] = moment(request.requested_at).format("DD-MM-YYYY");
+
+          requested_book.push(obj);
+          if(--no_of_request === 0) {
+            res.status(200).send(requested_book);
+          }
+        }, (err) => {
+            res.status(401).send(err);
+       });
+     });
+ });
 });
+
+
 };
 
 module.exports = {
