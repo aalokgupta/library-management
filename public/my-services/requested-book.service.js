@@ -23,9 +23,24 @@ libraryApp.factory('requestedBookService', function($sessionStorage, request) {
     headers: {
       "access-x-auth": $sessionStorage.token,
       "user_id": $sessionStorage.user_id
+      }
+    };
+    return request.getmethod(req);
+  }
+
+  factory.cancelBookRequest = function(user_id, book_id) {
+    var req = {
+    method: 'DELETE',
+    url: `/delete-requested-book`,
+    headers: {
+      "access-x-auth": $sessionStorage.token,
+      "user_id": $sessionStorage.user_id,
+    },
+    params: {
+      "book_id": book_id
     }
-  };
-  return request.getmethod(req);
-}
+    };
+    return request.deletemethod(req);
+  }
   return factory;
 });

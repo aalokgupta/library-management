@@ -13,10 +13,10 @@
         <option>E</option>
         <option>F</option>
       </select>
-      <input type="text" class = "text-style"/>
+      <input type="text" class = "text-style" ng-model = "book_name_searched"/>
     </div>
     <div class = "book-list-container">
-      <ol class = "ol-style" ng-repeat = "book in books">
+      <ol class = "ol-style" ng-repeat = "book in books | filter:book_name_searched">
         <li class = "li-book-list">
           <div class = "book-info">
             <h2> {{ book.book.name }}</h2>

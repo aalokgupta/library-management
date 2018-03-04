@@ -372,9 +372,23 @@ var routesHandler = function(app) {
             res.status(401).send(err);
        });
      });
- });
-});
+   });
+  });
 
+  app.delete('/delete-requested-book', authenticateUser, function(req, res) {
+      console.log("inside delete request");
+      var book_id = req.query.book_id;
+      var user_id = req.header('user_id');
+      console.log(req.query, user_id);
+      console.log("book_id received for delete request = "+book_id);
+      BookRequest.remove({user_id: user_id, book_id: book_id}, function(err, document) {
+        if(err) {
+          res.status(401).send("Book Detail not found");
+        }
+        console.log("Book request has been deleted from user-id "+user_id);
+        res.status(200).send("Request has been deleted");
+      });
+  });
 
 };
 

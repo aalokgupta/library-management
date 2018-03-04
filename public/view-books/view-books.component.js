@@ -61,7 +61,7 @@
   });
 
 
- viewBookApp.controller('viewBooksController', function($scope, $sessionStorage,
+ viewBookApp.controller('viewBooksController', function($scope, $sessionStorage, $filter,
                                                         Books, requestBook){
 
     $scope.data = {

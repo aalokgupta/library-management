@@ -35,20 +35,14 @@ libraryApp.factory('request', ['$http', function(http){
 
 
   request.deletemethod =  function(req) {
-    return new Promise(function(resolve, reject){
-      http(req).then((response) => {
+      return http(req).then((response) => {
         if(200 === response.status) {
-          console.log("books successfully deleted ");
-          resolve(response.data);
-        }
-        else {
-          reject(response.status);
+          console.log("request successfully executed");
+          return response;
         }
       }, (err) => {
-        reject(err);
+         return new Error("Delete request not executed");
       });
-    });
   }
-
   return request;
 }]);
